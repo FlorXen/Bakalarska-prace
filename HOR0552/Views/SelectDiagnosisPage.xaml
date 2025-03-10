@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="HOR0552.Views.SelectDiagnosisPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:HOR0552.Views"
+    xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
+    xmlns:model="clr-namespace:HOR0552.Models"
+    x:DataType="viewmodel:SelectDiagnosisViewModel"
+    mc:Ignorable="d">
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto, *, Auto"
+	  Padding="10">
+            <SearchBar Grid.Row="0" Margin="0, 0, 0, 10" Placeholder="Vyhledat" TextChanged="OnSearchBarTextChanged"/>
+            <CollectionView Grid.Row="1" ItemsSource="{Binding FilteredDiagnoses}"
+                    SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Diagnosis">
+                        <Border>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SelectDiagnosisViewModel}}, Path=ShowDetailCommand}"
+                                                   CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions=".80*, .20*" Padding="10">
+                                <Label	Grid.Column="0" Text="{Binding name}" FontSize="25"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HOR0552.Views.MainPage"
+             xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
+             xmlns:model="clr-namespace:HOR0552.Models"
+             x:DataType="viewmodel:MainPageViewModel">
+    
+	<Grid RowDefinitions="*, Auto"
+		  Padding="10">
+        <CollectionView ItemsSource="{Binding Diagnoses}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Diagnosis">
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItem Text="Odstranit"
+                                       BackgroundColor="Red"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=DeleteCommand}"
+                                       CommandParameter="{Binding .}"/>
+                        </SwipeView.LeftItems>
+                        <SwipeView.RightItems>
+                            <SwipeItem Text="Krok dokončen"
+                                       BackgroundColor="LimeGreen"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=NextStepCommand}"
+                                       CommandParameter="{Binding .}"/>
+                        </SwipeView.RightItems>
+                        <Border>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ShowDetailCommand}"
+                                                       CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            <Grid RowDefinitions="Auto, Auto" Padding="10">
+                                <Label Grid.Row="0" Text="{Binding name}" FontSize="25"/>
+                                <Label Grid.Row="1" FontSize="13">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Další krok léčby: " />
+                                            <Span Text="{Binding treatmentPlan, Converter={StaticResource FirstIncompleteTreatmentStepConverter}}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </Border>
+                    </SwipeView>
+                </DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+
+        <Button Grid.Row="1"
+				Text="Přidat diagnózu"
+				Command="{Binding AddDiagnosisCommand}"
+				Margin="5"/>
+    </Grid>
+</ContentPage>

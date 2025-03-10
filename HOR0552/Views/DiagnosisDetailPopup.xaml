@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<toolkit:Popup
+    x:Class="HOR0552.Views.DiagnosisDetailPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:HOR0552.Views"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:model="clr-namespace:HOR0552.Models"
+    xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
+    mc:Ignorable="d">
+
+    <Grid RowDefinitions="Auto, Auto, *, Auto"
+          ColumnDefinitions=".50*, .50*"
+          ColumnSpacing="10"
+          Padding="10"
+          BindingContext="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailPopupViewModel}}}">
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Diagnosis.name}" FontSize="25"/>
+        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="Průběh léčby:" FontSize="20"/>
+        <CollectionView Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding Diagnosis.treatmentPlan}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:TreatmentStep">
+                    <Label FontSize="15">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="- " />
+                                <Span Text="{Binding procedure.name}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Grid.Row="3"
+                Text="Zpět"
+                Clicked="ClosePopup"/>
+        <Button Grid.Row="3"
+                Grid.Column="1"
+                Text="Vybrat"
+                Command="{Binding SelectDiagnosisCommand}"
+                Clicked="ClosePopup"/>
+    </Grid>
+</toolkit:Popup>

@@ -1,0 +1,86 @@
+{
+  "diagnoses": [
+    {
+      "diagnosisId": "1",
+      "name": "Diabetes Type 2",
+      "treatmentPlan": [
+        {
+          "step": 1,
+          "procedure": {
+            "name": "Initial Consultation",
+            "type": "Consultation",
+            "doctorType": "Endocrinologist"
+          },
+          "deadlineInDays": 1,
+          "nextStep": 2
+        },
+        {
+          "step": 2,
+          "procedure": {
+            "name": "Blood Test",
+            "type": "Laboratory",
+            "doctorType": "Lab Technician"
+          },
+          "deadlineInDays": 2,
+          "nextSteps": {
+            "Normal": 3,
+            "Abnormal": 4
+          }
+        },
+        {
+          "step": 3,
+          "procedure": {
+            "name": "Nutrition Counseling",
+            "type": "Consultation",
+            "doctorType": "Dietitian"
+          },
+          "deadlineInDays": 1,
+          "nextStep": 5
+        },
+        {
+          "step": 4,
+          "procedure": {
+            "name": "Additional Tests",
+            "type": "Laboratory",
+            "doctorType": "Lab Technician"
+          },
+          "deadlineInDays": 5,
+          "nextStep": 5
+        },
+        {
+          "step": 5,
+          "procedure": {
+            "name": "Follow-up Consultation",
+            "type": "Consultation",
+            "doctorType": "Endocrinologist"
+          },
+          "deadlineInDays": 1,
+          "nextStep": 6
+        },
+        {
+          "step": 6,
+          "procedure": {
+            "name": "Ongoing Monitoring",
+            "type": "Monitoring",
+            "doctorType": "Endocrinologist"
+          },
+          "deadlineInDays": 30,
+          "nextStep": null
+        }
+      ]
+    },
+    {
+      "diagnosisId": "2",
+      "name": "Cold",
+      "treatmentPlan": [
+      ]
+    },
+    {
+      "diagnosisId": "3",
+      "name": "Broken femur",
+      "treatmentPlan": [
+      ]
+    }
+  ]
+}
+

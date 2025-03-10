@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="HOR0552.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:HOR0552.Views"
+    Shell.FlyoutBehavior="Flyout"
+    Title="HOR0552">
+
+    <ShellContent
+        Title="Moje diagnózy"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage"/>
+
+	<ShellContent
+        Title="Kalendář"
+        ContentTemplate="{DataTemplate local:CalendarPage}"
+        Route="CalendarPage"/>
+
+</Shell>
