@@ -16,8 +16,9 @@ namespace HOR0552.Models
 
         public override string ToString()
         {
-            var treatmentPlanString = treatmentPlan != null ? string.Join(", ", treatmentPlan.Select(tp => tp.procedure.name)) : "No treatment plan";
-            return $"Diagnosis ID: {diagnosisId}, Name: {name}, Start Date: {startDate?.ToString("yyyy-MM-dd") ?? "N/A"}, Treatment Plan: {treatmentPlanString}";
+            //var treatmentPlanString = treatmentPlan != null ? string.Join(", ", treatmentPlan.Select(tp => tp.procedure.name)) : "No treatment plan";
+            //return $"Diagnosis ID: {diagnosisId}, Name: {name}, Start Date: {startDate?.ToString("yyyy-MM-dd") ?? "N/A"}, Treatment Plan: {treatmentPlanString}";
+            return $"{name}";
         }
     }
 }

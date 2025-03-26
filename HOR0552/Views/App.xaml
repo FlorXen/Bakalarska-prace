@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="../Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:FirstIncompleteTreatmentStepConverter x:Key="FirstIncompleteTreatmentStepConverter"/>
+            <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

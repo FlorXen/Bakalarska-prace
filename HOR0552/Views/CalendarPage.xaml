@@ -7,20 +7,43 @@
              xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar" 
              x:DataType="viewmodel:CalendarViewModel">
 
-    <Grid RowDefinitions="Auto, *">
-        <controls:Calendar
+    <Grid RowDefinitions="*, Auto">
+        <controls:Calendar Grid.Row="0"
             Events="{Binding Events}"
             EventsScrollViewVisible="True"
             Culture="{Binding Culture}"
             VerticalOptions="Fill"
-            HorizontalOptions="Fill">
+            HorizontalOptions="Fill"
+            SelectedDate="{Binding SelectedDate}">
             <controls:Calendar.EventTemplate>
-                <DataTemplate x:DataType="model:TreatmentStepEvent">
-                    <VerticalStackLayout>
-                        <Label Text="{Binding name}" FontSize="15" FontAttributes="Bold"/>
-                    </VerticalStackLayout>
+                <DataTemplate x:DataType="model:CalendarEvent">
+                    <ScrollView Orientation="Vertical">
+                        <Border>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=AddEventCommand}"
+                                       CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            <Grid RowDefinitions="Auto, Auto" Padding="10">
+                                <Label Grid.Row="0" Text="{Binding name}" FontSize="25"/>
+                            </Grid>
+                        </Border>
+                    </ScrollView>
                 </DataTemplate>
             </controls:Calendar.EventTemplate>
+            <controls:Calendar.EmptyTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Label Text="ŽÁDNÉ UDÁLOSTI" HorizontalTextAlignment="Center" Margin="0,5,0,5" />
+                    </StackLayout>
+                </DataTemplate>
+            </controls:Calendar.EmptyTemplate>
         </controls:Calendar>
+        
+        <Button Grid.Row="1"
+                Text="Přidat událost" 
+                Command="{Binding AddEventCommand}" 
+                IsVisible="{Binding IsAddEventButtonVisible}"
+                HorizontalOptions="Center"
+                Margin="10"/>
     </Grid>
 </ContentPage>

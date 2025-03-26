@@ -4,12 +4,7 @@ using HOR0552.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
 using HOR0552.Views;
 using CommunityToolkit.Maui.Views;
 
@@ -18,15 +13,23 @@ public partial class SelectDiagnosisViewModel : ObservableObject
 {
 
     [ObservableProperty]
-    ObservableCollection<Diagnosis> diagnoses;
+    ObservableCollection<Diagnosis> allDiagnoses;
+
+    [ObservableProperty]
+    ObservableCollection<Diagnosis> selectedDiagnoses;
 
     [ObservableProperty]
     ObservableCollection<Diagnosis> filteredDiagnoses;
+
+    List<string> selectedDiagnosesIDs;
     public SelectDiagnosisViewModel()
     {
-        LoadAllDiagnoses();
+        FilteredDiagnoses = new ObservableCollection<Diagnosis>();
 
-        filteredDiagnoses = diagnoses;
+        LoadAllDiagnoses();
+        LoadSelectedDiagnoses();
+
+        FilterDiagnoses("");
     }
     [RelayCommand]
     async void ShowDetail(Diagnosis diagnosis)
@@ -50,26 +53,65 @@ public partial class SelectDiagnosisViewModel : ObservableObject
         if (diagnosesRootJson?.diagnoses != null)
         {
             DiagnosesRoot diagnosesRoot = diagnosesRootJson;
-            Diagnoses = new ObservableCollection<Diagnosis>(diagnosesRoot.diagnoses);
+            AllDiagnoses = new ObservableCollection<Diagnosis>(diagnosesRoot.diagnoses);
         }
         else
         {
-            Diagnoses = new ObservableCollection<Diagnosis>();
+            AllDiagnoses = new ObservableCollection<Diagnosis>();
         }
+    }
+
+    private void LoadSelectedDiagnoses()
+    {
+        var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
+        if (File.Exists(filePath))
+        {
+            using var reader = new StreamReader(filePath);
+            var json = reader.ReadToEnd();
+            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+            if (loadedDiagnoses != null)
+            {
+                SelectedDiagnoses = loadedDiagnoses;
+            }
+        }
+        else
+        {
+            SelectedDiagnoses = new ObservableCollection<Diagnosis>();
+        }
+
+        selectedDiagnosesIDs = SelectedDiagnoses.Select(d => d.diagnosisId).ToList();
     }
 
     public void FilterDiagnoses(string searchText)
     {
+        
         if (string.IsNullOrWhiteSpace(searchText))
         {
-            FilteredDiagnoses = new ObservableCollection<Diagnosis>(Diagnoses);
+            FilteredDiagnoses.Clear();
+
+            foreach (var diagnosis in AllDiagnoses)
+            {
+                if (!selectedDiagnosesIDs.Contains(diagnosis.diagnosisId))
+                {
+                    FilteredDiagnoses.Add(diagnosis);
+                }
+            }
         }
         else
         {
-            var filteredList = Diagnoses
+            var filteredList = AllDiagnoses
                 .Where(d => d.name.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 .ToList();
-            FilteredDiagnoses = new ObservableCollection<Diagnosis>(filteredList);
+
+            FilteredDiagnoses.Clear();
+
+            foreach (var diagnosis in filteredList)
+            {
+                if (!selectedDiagnosesIDs.Contains(diagnosis.diagnosisId))
+                {
+                    FilteredDiagnoses.Add(diagnosis);
+                }
+            }
         }
     }
 }

@@ -19,14 +19,17 @@ namespace HOR0552
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainPageViewModel>();
 
-            builder.Services.AddTransient<CalendarPage>();
-            builder.Services.AddTransient<CalendarViewModel>();
+            builder.Services.AddSingleton<CalendarPage>();
+            builder.Services.AddSingleton<CalendarViewModel>();
 
             builder.Services.AddTransient<DiagnosisDetailPage>();
             builder.Services.AddTransient<DiagnosisDetailViewModel>();
 
             builder.Services.AddTransient<SelectDiagnosisPage>();
             builder.Services.AddTransient<SelectDiagnosisViewModel>();
+
+            builder.Services.AddTransient<AddEventPage>();
+            builder.Services.AddTransient<AddEventViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

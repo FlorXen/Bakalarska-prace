@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using CommunityToolkit.Maui.Views;
+﻿using System.Globalization;
 using HOR0552.Models;
-using Microsoft.Maui.Controls;
 
 namespace HOR0552;
 

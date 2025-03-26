@@ -37,7 +37,7 @@ public partial class MainPageViewModel : ObservableObject
             
         }
     }
-        [RelayCommand]
+    [RelayCommand]
     async Task ShowDetail(Diagnosis diagnosis)
     {
         await Shell.Current.GoToAsync(nameof(DiagnosisDetailPage), true,

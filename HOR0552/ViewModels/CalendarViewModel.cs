@@ -1,86 +1,125 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Plugin.Maui.Calendar.Models;
 using HOR0552.Models;
-using System;
-using System.Collections.Generic;
+using HOR0552.Views;
 using System.Globalization;
-using HOR0552.Models;
 using System.Collections.ObjectModel;
 using System.Text.Json;
-using Android.Mtp;
+using CommunityToolkit.Mvvm.Input;
+using System.Runtime.ConstrainedExecution;
 
 namespace HOR0552.ViewModels;
 
 public partial class CalendarViewModel : ObservableObject
 {
-    ObservableCollection<Diagnosis> diagnoses;
+    ObservableCollection<CalendarEvent> eventCollection;
     public EventCollection Events { get; set; }
     public CultureInfo Culture => new CultureInfo("cs-CZ");
+
+    [ObservableProperty]
+    private bool isAddEventButtonVisible;
+
+    [ObservableProperty]
+    private DateTime selectedDate;
+
     public CalendarViewModel()
     {
-        LoadSelectedDiagnoses();
-        
-                Events = new EventCollection { };
+        Events = new EventCollection { };
 
-                foreach (Diagnosis diagnosis in diagnoses)
-                {
-                    foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
-                    {
-                        if (treatmentStep.step == diagnosis.currentStepNum)
-                        {
-                            var eventDate = treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays);
-                    /*
-                            if (!Events.ContainsKey(eventDate))
-                            {
-                                Events[eventDate] = new DayEventCollection<TreatmentStepEvent>();
-                            }
-
-                            if (Events[eventDate] is DayEventCollection<TreatmentStepEvent> eventList)
-                            {
-                                eventList.Add(new TreatmentStepEvent { step = treatmentStep });
-                            }
-                    */
-                            Events.Add(eventDate, new DayEventCollection<TreatmentStepEvent>(new List<TreatmentStepEvent> { new TreatmentStepEvent { step = treatmentStep, name = "Konečný termín kroku: " + treatmentStep.procedure.name } })
-                            {
-                                EventIndicatorTextColor = Colors.Red,
-                                EventIndicatorColor = Colors.Red,
-                                EventIndicatorSelectedColor = Colors.Red,
-                                EventIndicatorSelectedTextColor = Colors.Red
-                            });
-
-                    break;
-                        }
-                    }
-                }
+        selectedDate = DateTime.Now;
+        isAddEventButtonVisible = false;
+        eventCollection = new ObservableCollection<CalendarEvent>();
     }
 
-    private void LoadSelectedDiagnoses()
+    public void OnPageAppearing()
     {
-        var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
+        LoadAllEvents();
+
+        Events.Clear();
+
+        foreach (CalendarEvent e in eventCollection)
+        {
+            Color clr;
+            switch (e.color)
+            {
+                case "Modrá":
+                    clr = Colors.Blue;
+                    break;
+                case "Červená":
+                    clr = Colors.Red;
+                    break;
+                case "Zelená":
+                    clr = Colors.Green;
+                    break;
+                case "Žlutá":
+                    clr = Colors.Yellow;
+                    break;
+                case "Fialová":
+                    clr = Colors.Magenta;
+                    break;
+                default:
+                    clr = Colors.Blue;
+                    break;
+            }
+
+            if (!Events.ContainsKey(e.date))
+            {
+                Events.Add(e.date, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = e.diagnosisId, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color } })
+                {
+                    EventIndicatorColor = clr,
+                    EventIndicatorSelectedColor = clr,
+                    EventIndicatorSelectedTextColor = clr
+                });
+            }
+            else if (Events[e.date] is DayEventCollection<CalendarEvent> eventList)
+            {
+                eventList.Add(new CalendarEvent { diagnosisId = e.diagnosisId, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color });
+            }
+        }
+    }
+
+    private void LoadAllEvents()
+    {
+        var filePath = Path.Combine(FileSystem.AppDataDirectory, "events.json");
         if (File.Exists(filePath))
         {
             using var reader = new StreamReader(filePath);
             var json = reader.ReadToEnd();
-            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-            if (loadedDiagnoses != null)
+            if(json != "")
             {
-                diagnoses = loadedDiagnoses;
+                var loadedEvents = JsonSerializer.Deserialize<ObservableCollection<CalendarEvent>>(json);
+                if (loadedEvents != null)
+                {
+                    eventCollection = loadedEvents;
+                }
+                else
+                {
+                    eventCollection = new ObservableCollection<CalendarEvent>();
+                }
+            } else
+            {
+                eventCollection = new ObservableCollection<CalendarEvent>();
             }
+            
         }
         else
         {
-            diagnoses = new ObservableCollection<Diagnosis>();
+            eventCollection = new ObservableCollection<CalendarEvent>();
         }
     }
 
-    // Add the missing GenerateEvents method
-    private IEnumerable<TreatmentStepEvent> GenerateEvents(int count, string name)
+    partial void OnSelectedDateChanged(DateTime value)
     {
-        var events = new List<TreatmentStepEvent>();
-        for (int i = 0; i < count; i++)
-        {
-            events.Add(new TreatmentStepEvent { name = name });
-        }
-        return events;
+        if(value != null)
+            IsAddEventButtonVisible = true;
+        else
+            IsAddEventButtonVisible = false;
+    }
+
+    [RelayCommand]
+    async Task AddEvent()
+    {
+        await Shell.Current.GoToAsync(nameof(AddEventPage), true,
+            new Dictionary<string, object> { { "SelectedDate", SelectedDate } });
     }
 }
