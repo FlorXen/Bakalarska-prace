@@ -32,7 +32,7 @@ namespace HOR0552.ViewModels
         string notes;
 
         [ObservableProperty]
-        string selectedColor = "Modrá";
+        string selectedColor = "Blue";
 
         [ObservableProperty]
         Diagnosis selectedDiagnosis;
@@ -71,7 +71,30 @@ namespace HOR0552.ViewModels
         [RelayCommand]
         private void AddEvent()
         {
-            eventCollection.Add(new CalendarEvent { diagnosisId =(selectedDiagnosis == null) ? null : selectedDiagnosis.diagnosisId, name = eventTitle, date = (IsAllDay)?EventDate:(EventDate.Add(EventTime)), location = Location, description = Notes, color = SelectedColor });
+            string clr;
+            switch (SelectedColor)
+            {
+                case "Modrá":
+                    clr = "Blue";
+                    break;
+                case "Èervená":
+                    clr = "Red";
+                    break;
+                case "Zelená":
+                    clr = "Green";
+                    break;
+                case "Žlutá":
+                    clr = "Yellow";
+                    break;
+                case "Fialová":
+                    clr = "Magenta";
+                    break;
+                default:
+                    clr = "Blue";
+                    break;
+            }
+
+            eventCollection.Add(new CalendarEvent { diagnosisId =(selectedDiagnosis == null) ? null : selectedDiagnosis.diagnosisId, diagnosisName = (selectedDiagnosis == null) ? null : selectedDiagnosis.name, name = eventTitle, date = (IsAllDay)?EventDate:(EventDate.Add(EventTime)), location = Location, description = Notes, color = clr });
             
             updateAllEvents();
 

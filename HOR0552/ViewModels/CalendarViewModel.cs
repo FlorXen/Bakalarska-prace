@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.Input;
 using System.Runtime.ConstrainedExecution;
+using System.ComponentModel;
 
 namespace HOR0552.ViewModels;
 
@@ -20,19 +21,21 @@ public partial class CalendarViewModel : ObservableObject
     private bool isAddEventButtonVisible;
 
     [ObservableProperty]
-    private DateTime selectedDate;
+    private DateTime? selectedDate;
 
     public CalendarViewModel()
     {
         Events = new EventCollection { };
 
-        selectedDate = DateTime.Now;
-        isAddEventButtonVisible = false;
+        SelectedDate = DateTime.Now;
+        IsAddEventButtonVisible = false;
         eventCollection = new ObservableCollection<CalendarEvent>();
     }
 
     public void OnPageAppearing()
     {
+        SelectedDate = null;
+
         LoadAllEvents();
 
         Events.Clear();
@@ -42,19 +45,19 @@ public partial class CalendarViewModel : ObservableObject
             Color clr;
             switch (e.color)
             {
-                case "Modrá":
+                case "Blue":
                     clr = Colors.Blue;
                     break;
-                case "Červená":
+                case "Red":
                     clr = Colors.Red;
                     break;
-                case "Zelená":
+                case "Green":
                     clr = Colors.Green;
                     break;
-                case "Žlutá":
+                case "Yellow":
                     clr = Colors.Yellow;
                     break;
-                case "Fialová":
+                case "Magenta":
                     clr = Colors.Magenta;
                     break;
                 default:
@@ -64,7 +67,7 @@ public partial class CalendarViewModel : ObservableObject
 
             if (!Events.ContainsKey(e.date))
             {
-                Events.Add(e.date, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = e.diagnosisId, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color } })
+                Events.Add(e.date, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = e.diagnosisId, diagnosisName = e.diagnosisName, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color } })
                 {
                     EventIndicatorColor = clr,
                     EventIndicatorSelectedColor = clr,
@@ -73,7 +76,7 @@ public partial class CalendarViewModel : ObservableObject
             }
             else if (Events[e.date] is DayEventCollection<CalendarEvent> eventList)
             {
-                eventList.Add(new CalendarEvent { diagnosisId = e.diagnosisId, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color });
+                eventList.Add(new CalendarEvent { diagnosisId = e.diagnosisId, diagnosisName = e.diagnosisName, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color });
             }
         }
     }
@@ -108,12 +111,16 @@ public partial class CalendarViewModel : ObservableObject
         }
     }
 
-    partial void OnSelectedDateChanged(DateTime value)
+    partial void OnSelectedDateChanged(DateTime? value)
     {
         if(value != null)
+        {
             IsAddEventButtonVisible = true;
+        }
         else
+        {
             IsAddEventButtonVisible = false;
+        }
     }
 
     [RelayCommand]
@@ -121,5 +128,15 @@ public partial class CalendarViewModel : ObservableObject
     {
         await Shell.Current.GoToAsync(nameof(AddEventPage), true,
             new Dictionary<string, object> { { "SelectedDate", SelectedDate } });
+    }
+
+    [RelayCommand]
+    async Task EventTapped(CalendarEvent calendarEvent)
+    {
+        if (calendarEvent != null)
+        {
+            await Shell.Current.GoToAsync(nameof(EventDetailsPage), true,
+                new Dictionary<string, object> { { "SelectedEvent", calendarEvent } });
+        }
     }
 }

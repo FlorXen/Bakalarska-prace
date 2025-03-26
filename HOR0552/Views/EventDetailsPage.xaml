@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:HOR0552.Models"
+             xmlns:vm="clr-namespace:HOR0552.ViewModels"
+             xmlns:local="clr-namespace:HOR0552"
+             x:Class="HOR0552.Views.EventDetailsPage"
+             x:DataType="vm:EventDetailsViewModel">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="delete_icon.png"
+                     Text="Odstranit"
+                     Command="{Binding DeleteEventCommand}"
+                     Order="Primary"
+                     Priority="1"/>
+        <ToolbarItem IconImageSource="edit_icon.png"
+                     Text="Upravit"
+                     Command="{Binding EditEventCommand}"
+                     Order="Primary"
+                     Priority="0"/>
+    </ContentPage.ToolbarItems>
+    
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                BackgroundColor="{Binding SelectedEvent.color}"/>
+        
+        <Label Grid.Row="1"
+               Text="{Binding SelectedEvent.diagnosisName}"
+               FontSize="28"
+               FontAttributes="Bold"
+               Padding="0,10,0,5"/>
+        
+        <Label Grid.Row="2"
+               Text="{Binding SelectedEvent.name}"
+               FontSize="28"
+               FontAttributes="Bold"
+               Padding="0,10,0,5"/>
+
+        <Label Grid.Row="3"
+               Text="{Binding FormatedDate}"
+               FontSize="22"
+               TextColor="Gray"/>
+
+        <Label Grid.Row="4"
+               Text="{Binding SelectedEvent.location}"
+               FontSize="22"
+               TextColor="Gray"/>
+
+        <Label Grid.Row="5"
+               Text="{Binding SelectedEvent.description}"
+               FontSize="22"
+               TextColor="Gray"/>
+
+    </Grid>
+</ContentPage>

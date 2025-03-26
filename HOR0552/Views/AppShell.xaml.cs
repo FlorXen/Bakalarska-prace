@@ -17,6 +17,11 @@ namespace HOR0552
             Routing.RegisterRoute(nameof(SelectDiagnosisPage), typeof(SelectDiagnosisPage));
 
             Routing.RegisterRoute(nameof(AddEventPage), typeof(AddEventPage));
+
+            Routing.RegisterRoute(nameof(EventDetailsPage), typeof(EventDetailsPage));
+
         }
+
+        
     }
 }

@@ -15,16 +15,18 @@
             VerticalOptions="Fill"
             HorizontalOptions="Fill"
             SelectedDate="{Binding SelectedDate}">
+            
             <controls:Calendar.EventTemplate>
                 <DataTemplate x:DataType="model:CalendarEvent">
                     <ScrollView Orientation="Vertical">
                         <Border>
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=AddEventCommand}"
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=EventTappedCommand}"
                                        CommandParameter="{Binding .}"/>
                             </Border.GestureRecognizers>
-                            <Grid RowDefinitions="Auto, Auto" Padding="10">
-                                <Label Grid.Row="0" Text="{Binding name}" FontSize="25"/>
+                            <Grid ColumnDefinitions="35, Auto" RowDefinitions="35" Padding="10">
+                                <Border Grid.Row="0" Grid.Column="0" BackgroundColor="{Binding color}"/>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding name}" FontSize="25"/>
                             </Grid>
                         </Border>
                     </ScrollView>
