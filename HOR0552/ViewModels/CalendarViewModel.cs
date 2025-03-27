@@ -13,6 +13,7 @@ namespace HOR0552.ViewModels;
 
 public partial class CalendarViewModel : ObservableObject
 {
+    ObservableCollection<Diagnosis> Diagnoses;
     ObservableCollection<CalendarEvent> eventCollection;
     public EventCollection Events { get; set; }
     public CultureInfo Culture => new CultureInfo("cs-CZ");
@@ -39,6 +40,50 @@ public partial class CalendarViewModel : ObservableObject
         LoadAllEvents();
 
         Events.Clear();
+
+        LoadSelectedDiagnoses();
+
+        foreach (Diagnosis diagnosis in Diagnoses)
+        {
+            foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
+            {
+                if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                {
+                    DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
+
+                    if (!Events.ContainsKey(deadlineDate))
+                    {
+                        Events.Add(deadlineDate, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = diagnosis.diagnosisId,
+                            diagnosisName = diagnosis.name,
+                            name = "Konečný termín pro krok " + treatmentStep.procedure.name,
+                            date = deadlineDate,
+                            location = "",
+                            description = "",
+                            color = "Red" } })
+                        {
+                            EventIndicatorColor = Colors.Red,
+                            EventIndicatorSelectedColor = Colors.Red,
+                            EventIndicatorSelectedTextColor = Colors.Red
+                        });
+                    }
+                    else if (Events[deadlineDate] is DayEventCollection<CalendarEvent> eventList)
+                    {
+                        eventList.Add(new CalendarEvent
+                        {
+                            diagnosisId = diagnosis.diagnosisId,
+                            diagnosisName = diagnosis.name,
+                            name = "Konečný termín pro krok " + treatmentStep.procedure.name,
+                            date = deadlineDate,
+                            location = "",
+                            description = "",
+                            color = "Red"
+                        });
+                    }
+
+                    break;
+                }
+            }
+        }
 
         foreach (CalendarEvent e in eventCollection)
         {
@@ -111,6 +156,25 @@ public partial class CalendarViewModel : ObservableObject
         }
     }
 
+    private void LoadSelectedDiagnoses()
+    {
+        var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
+        if (File.Exists(filePath))
+        {
+            using var reader = new StreamReader(filePath);
+            var json = reader.ReadToEnd();
+            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+            if (loadedDiagnoses != null)
+            {
+                Diagnoses = loadedDiagnoses;
+            }
+        }
+        else
+        {
+            Diagnoses = new ObservableCollection<Diagnosis>();
+        }
+    }
+
     partial void OnSelectedDateChanged(DateTime? value)
     {
         if(value != null)
@@ -135,7 +199,7 @@ public partial class CalendarViewModel : ObservableObject
     {
         if (calendarEvent != null)
         {
-            await Shell.Current.GoToAsync(nameof(EventDetailsPage), true,
+            await Shell.Current.GoToAsync(nameof(EventDetailsPage), false,
                 new Dictionary<string, object> { { "SelectedEvent", calendarEvent } });
         }
     }

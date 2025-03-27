@@ -8,10 +8,6 @@ namespace HOR0552
         {
             InitializeComponent();
 
-            Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
-
-            Routing.RegisterRoute(nameof(CalendarPage), typeof(CalendarPage));
-
             Routing.RegisterRoute(nameof(DiagnosisDetailPage), typeof(DiagnosisDetailPage));
 
             Routing.RegisterRoute(nameof(SelectDiagnosisPage), typeof(SelectDiagnosisPage));
@@ -19,6 +15,8 @@ namespace HOR0552
             Routing.RegisterRoute(nameof(AddEventPage), typeof(AddEventPage));
 
             Routing.RegisterRoute(nameof(EventDetailsPage), typeof(EventDetailsPage));
+
+            Routing.RegisterRoute(nameof(EditEventPage), typeof(EditEventPage));
 
         }
 

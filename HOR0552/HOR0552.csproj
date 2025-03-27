@@ -92,6 +92,9 @@
 	  <MauiXaml Update="Views\DiagnosisDetailPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\EditEventPage.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\EventDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -20,6 +20,7 @@ public partial class MainPageViewModel : ObservableObject
     public void OnPageAppearing()
     {
         LoadSelectedDiagnoses();
+        updateSelectedDiagnoses();
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

@@ -34,6 +34,9 @@ namespace HOR0552
             builder.Services.AddTransient<EventDetailsPage>();
             builder.Services.AddTransient<EventDetailsViewModel>();
 
+            builder.Services.AddTransient<EditEventPage>();
+            builder.Services.AddTransient<EditEventViewModel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

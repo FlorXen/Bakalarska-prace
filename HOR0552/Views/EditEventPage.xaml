@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HOR0552.Views.EditEventPage"
+             xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
+             x:DataType="viewmodel:EditEventViewModel">
+
+    <Grid Margin="10" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto, *" RowSpacing="20">
+
+        <Picker Grid.Row="0" Grid.ColumnSpan="2" Title="Diagnóza" FontSize="20" ItemsSource="{Binding Diagnoses}" SelectedItem="{Binding SelectedDiagnosis}" />
+
+        <Entry Grid.Row="1" Grid.ColumnSpan="2" Placeholder="Zadejte název" Text="{Binding EventTitle}" FontSize="20" />
+
+        <Label Grid.Row="2" Grid.Column="0" Text="Celodenní událost:" VerticalTextAlignment="Center"  FontSize="20"/>
+        <Switch Grid.Row="2" Grid.Column="1" Margin="0, 0, 100, 0" IsToggled="{Binding IsAllDay, Mode=TwoWay}" />
+
+        <StackLayout Grid.Row="3" Grid.ColumnSpan="2" >
+            <Label Text="Datum a čas:"  FontSize="20"/>
+            <HorizontalStackLayout>
+                <DatePicker Date="{Binding EventDate}" Format="dd.MM.yyyy" FontSize="20"/>
+                <TimePicker Time="{Binding EventTime}" Format="HH:mm"  FontSize="20" IsEnabled="{Binding IsAllDay, Converter={StaticResource InverseBooleanConverter}}"/>
+            </HorizontalStackLayout>
+        </StackLayout>
+
+        <Entry Grid.Row="4" Grid.ColumnSpan="2" Placeholder="Místo konání" Text="{Binding Location}"  FontSize="25"/>
+
+        <Editor Grid.Row="5" Grid.ColumnSpan="2" Placeholder="Poznámky" Text="{Binding Notes}" HeightRequest="100"  FontSize="20"/>
+
+        <Picker Grid.Row="6" Grid.ColumnSpan="2" Title="Barva události" FontSize="20" SelectedItem="{Binding SelectedColor}">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Modrá</x:String>
+                    <x:String>Červená</x:String>
+                    <x:String>Zelená</x:String>
+                    <x:String>Žlutá</x:String>
+                    <x:String>Fialová</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <Button Grid.Row="7" Grid.ColumnSpan="2"
+                Text="Upravit událost"
+                Command="{Binding EditEventCommand}"
+                HorizontalOptions="Center"
+                Margin="5"
+                Padding="10"
+                FontSize="20"/>
+
+    </Grid>
+</ContentPage>

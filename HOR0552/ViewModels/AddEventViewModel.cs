@@ -10,6 +10,7 @@ namespace HOR0552.ViewModels
     [QueryProperty(nameof(SelectedDate), "SelectedDate")]
     public partial class AddEventViewModel : ObservableObject
     {
+
         [ObservableProperty]
         DateTime selectedDate;
 
@@ -32,7 +33,7 @@ namespace HOR0552.ViewModels
         string notes;
 
         [ObservableProperty]
-        string selectedColor = "Blue";
+        string selectedColor = "Modrá";
 
         [ObservableProperty]
         Diagnosis selectedDiagnosis;
@@ -45,6 +46,7 @@ namespace HOR0552.ViewModels
         {
             EventDate = SelectedDate;
             EventTime = DateTime.Now.TimeOfDay;
+
             LoadSelectedDiagnoses();
             LoadAllEvents();
         }
@@ -94,8 +96,8 @@ namespace HOR0552.ViewModels
                     break;
             }
 
-            eventCollection.Add(new CalendarEvent { diagnosisId =(selectedDiagnosis == null) ? null : selectedDiagnosis.diagnosisId, diagnosisName = (selectedDiagnosis == null) ? null : selectedDiagnosis.name, name = eventTitle, date = (IsAllDay)?EventDate:(EventDate.Add(EventTime)), location = Location, description = Notes, color = clr });
-            
+            eventCollection.Add(new CalendarEvent { diagnosisId = (SelectedDiagnosis == null) ? null : SelectedDiagnosis.diagnosisId, diagnosisName = (SelectedDiagnosis == null) ? null : SelectedDiagnosis.name, name = EventTitle, date = (IsAllDay) ? EventDate : (EventDate.Add(EventTime)), location = Location, description = Notes, color = clr });
+
             updateAllEvents();
 
             Shell.Current.GoToAsync("..");
