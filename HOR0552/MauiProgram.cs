@@ -37,6 +37,9 @@ namespace HOR0552
             builder.Services.AddTransient<EditEventPage>();
             builder.Services.AddTransient<EditEventViewModel>();
 
+            builder.Services.AddSingleton<DiagnosisDetailCalendarPage>();
+            builder.Services.AddSingleton<DiagnosisDetailCalendarViewModel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

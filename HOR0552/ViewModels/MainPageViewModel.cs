@@ -40,8 +40,11 @@ public partial class MainPageViewModel : ObservableObject
     }
     [RelayCommand]
     async Task ShowDetail(Diagnosis diagnosis)
-    {
+    {/*
         await Shell.Current.GoToAsync(nameof(DiagnosisDetailPage), true,
+            new Dictionary<string, object> { { "SelectedDiagnosis", diagnosis } });
+        */
+        await Shell.Current.GoToAsync(nameof(DiagnosisDetailCalendarPage), true,
             new Dictionary<string, object> { { "SelectedDiagnosis", diagnosis } });
     }
 

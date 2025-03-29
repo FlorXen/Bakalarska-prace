@@ -18,6 +18,8 @@ namespace HOR0552
 
             Routing.RegisterRoute(nameof(EditEventPage), typeof(EditEventPage));
 
+            Routing.RegisterRoute(nameof(DiagnosisDetailCalendarPage), typeof(DiagnosisDetailCalendarPage));
+
         }
 
         

@@ -37,13 +37,23 @@ namespace HOR0552
         {
             Task.Run(async () =>
             {
-                var calendarPage = services.GetService<CalendarPage>();
-                if (calendarPage != null)
+                var calendarPage1 = services.GetService<CalendarPage>();
+                if (calendarPage1 != null)
                 {
                     // Předvykreslení stránky kalendáře
                     await Application.Current.Dispatcher.DispatchAsync(() =>
                     {
-                        var content = calendarPage.Content;
+                        var content = calendarPage1.Content;
+                    });
+                }
+
+                var calendarPage2 = services.GetService<DiagnosisDetailCalendarPage>();
+                if (calendarPage2 != null)
+                {
+                    // Předvykreslení stránky kalendáře
+                    await Application.Current.Dispatcher.DispatchAsync(() =>
+                    {
+                        var content = calendarPage2.Content;
                     });
                 }
             });

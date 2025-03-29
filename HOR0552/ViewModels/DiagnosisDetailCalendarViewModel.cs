@@ -8,7 +8,9 @@ using System.Text.Json;
 using CommunityToolkit.Mvvm.Input;
 
 namespace HOR0552.ViewModels;
-public partial class CalendarViewModel : ObservableObject
+
+[QueryProperty(nameof(SelectedDiagnosis), "SelectedDiagnosis")]
+public partial class DiagnosisDetailCalendarViewModel : ObservableObject
 {
     ObservableCollection<Diagnosis> Diagnoses;
     ObservableCollection<CalendarEvent> eventCollection;
@@ -16,14 +18,18 @@ public partial class CalendarViewModel : ObservableObject
     public CultureInfo Culture => new CultureInfo("cs-CZ");
 
     [ObservableProperty]
+    private Diagnosis? selectedDiagnosis;
+
+    [ObservableProperty]
     private bool isAddEventButtonVisible;
 
     [ObservableProperty]
     private DateTime? selectedDate;
 
-    public CalendarViewModel()
+    public DiagnosisDetailCalendarViewModel()
     {
         Events = new EventCollection { };
+
         SelectedDate = DateTime.Now;
         IsAddEventButtonVisible = false;
         eventCollection = new ObservableCollection<CalendarEvent>();
@@ -33,7 +39,6 @@ public partial class CalendarViewModel : ObservableObject
     {
         SelectedDate = null;
         LoadAllEvents();
-        LoadSelectedDiagnoses();
         PopulateEvents();
     }
 
@@ -41,50 +46,53 @@ public partial class CalendarViewModel : ObservableObject
     {
         Events.Clear();
 
-        foreach (Diagnosis diagnosis in Diagnoses)
+        foreach (TreatmentStep treatmentStep in SelectedDiagnosis.treatmentPlan)
         {
-            foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
+            if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
             {
-                if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
-                {
-                    DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
+                DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
 
-                    if (!Events.ContainsKey(deadlineDate))
-                    {
-                        Events.Add(deadlineDate, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = diagnosis.diagnosisId,
-                            diagnosisName = diagnosis.name,
+                if (!Events.ContainsKey(deadlineDate))
+                {
+                    Events.Add(deadlineDate, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent {
+                            diagnosisId = SelectedDiagnosis.diagnosisId,
+                            diagnosisName = SelectedDiagnosis.name,
                             name = "Konečný termín pro krok " + treatmentStep.procedure.name,
                             date = deadlineDate,
                             location = "",
                             description = "",
                             color = "Red" } })
-                        {
-                            EventIndicatorColor = Colors.Red,
-                            EventIndicatorSelectedColor = Colors.Red,
-                            EventIndicatorSelectedTextColor = Colors.Red
-                        });
-                    }
-                    else if (Events[deadlineDate] is DayEventCollection<CalendarEvent> eventList)
                     {
-                        eventList.Add(new CalendarEvent
-                        {
-                            diagnosisId = diagnosis.diagnosisId,
-                            diagnosisName = diagnosis.name,
-                            name = "Konečný termín pro krok " + treatmentStep.procedure.name,
-                            date = deadlineDate,
-                            location = "",
-                            description = "",
-                            color = "Red"
-                        });
-                    }
-
-                    break;
+                        EventIndicatorColor = Colors.Red,
+                        EventIndicatorSelectedColor = Colors.Red,
+                        EventIndicatorSelectedTextColor = Colors.Red
+                    });
                 }
+                else if (Events[deadlineDate] is DayEventCollection<CalendarEvent> eventList)
+                {
+                    eventList.Add(new CalendarEvent
+                    {
+                        diagnosisId = SelectedDiagnosis.diagnosisId,
+                        diagnosisName = SelectedDiagnosis.name,
+                        name = "Konečný termín pro krok " + treatmentStep.procedure.name,
+                        date = deadlineDate,
+                        location = "",
+                        description = "",
+                        color = "Red"
+                    });
+                }
+
+                break;
             }
         }
+    
 
         foreach (CalendarEvent e in eventCollection)
         {
+
+            if (!SelectedDiagnosis.diagnosisId.Equals(e.diagnosisId))
+                continue;
+
             Color clr;
             switch (e.color)
             {
@@ -131,7 +139,7 @@ public partial class CalendarViewModel : ObservableObject
         {
             using var reader = new StreamReader(filePath);
             var json = reader.ReadToEnd();
-            if(json != "")
+            if (json != "")
             {
                 var loadedEvents = JsonSerializer.Deserialize<ObservableCollection<CalendarEvent>>(json);
                 if (loadedEvents != null)
@@ -142,11 +150,12 @@ public partial class CalendarViewModel : ObservableObject
                 {
                     eventCollection = new ObservableCollection<CalendarEvent>();
                 }
-            } else
+            }
+            else
             {
                 eventCollection = new ObservableCollection<CalendarEvent>();
             }
-            
+
         }
         else
         {
@@ -154,28 +163,9 @@ public partial class CalendarViewModel : ObservableObject
         }
     }
 
-    private void LoadSelectedDiagnoses()
-    {
-        var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
-        if (File.Exists(filePath))
-        {
-            using var reader = new StreamReader(filePath);
-            var json = reader.ReadToEnd();
-            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-            if (loadedDiagnoses != null)
-            {
-                Diagnoses = loadedDiagnoses;
-            }
-        }
-        else
-        {
-            Diagnoses = new ObservableCollection<Diagnosis>();
-        }
-    }
-
     partial void OnSelectedDateChanged(DateTime? value)
     {
-        if(value != null)
+        if (value != null)
         {
             IsAddEventButtonVisible = true;
         }

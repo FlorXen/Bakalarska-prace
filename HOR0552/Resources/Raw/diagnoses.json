@@ -73,12 +73,32 @@
       "diagnosisId": "2",
       "name": "Cold",
       "treatmentPlan": [
+        {
+          "step": 1,
+          "procedure": {
+            "name": "Initial Consultation",
+            "type": "Consultation",
+            "doctorType": "Endocrinologist"
+          },
+          "deadlineInDays": 1,
+          "nextStep": null
+        }
       ]
     },
     {
       "diagnosisId": "3",
       "name": "Broken femur",
       "treatmentPlan": [
+        {
+          "step": 1,
+          "procedure": {
+            "name": "Initial Consultation",
+            "type": "Consultation",
+            "doctorType": "Endocrinologist"
+          },
+          "deadlineInDays": 1,
+          "nextStep": null
+        }
       ]
     }
   ]
