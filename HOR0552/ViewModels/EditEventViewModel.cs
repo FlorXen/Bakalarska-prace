@@ -106,11 +106,13 @@ namespace HOR0552.ViewModels
                 if (loadedDiagnoses != null)
                 {
                     Diagnoses = loadedDiagnoses;
+                    Diagnoses.Add(new Diagnosis { diagnosisId = "", name = "Bez diagnózy", currentStepNum = 0, startDate = null, treatmentPlan = new List<TreatmentStep>() });
                 }
             }
             else
             {
                 Diagnoses = new ObservableCollection<Diagnosis>();
+                Diagnoses.Add(new Diagnosis { diagnosisId = "", name = "Bez diagnózy", currentStepNum = 0, startDate = null, treatmentPlan = new List<TreatmentStep>()});
             }
         }
 

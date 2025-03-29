@@ -24,9 +24,13 @@
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=EventTappedCommand}"
                                        CommandParameter="{Binding .}"/>
                             </Border.GestureRecognizers>
-                            <Grid ColumnDefinitions="35, Auto" RowDefinitions="35" Padding="10">
-                                <Border Grid.Row="0" Grid.Column="0" BackgroundColor="{Binding color}"/>
-                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding name}" FontSize="25"/>
+                            <Grid ColumnDefinitions="35, Auto" RowDefinitions="Auto" Padding="5">
+                                <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="{Binding color}" HeightRequest="35" WidthRequest="35" CornerRadius="17.5" HasShadow="False"/>
+                                <VerticalStackLayout Grid.Row="0" Grid.Column="1" Margin="10,0,0,0">
+                                    <Label Text="{Binding name}" FontAttributes="Bold" FontSize="17"/>
+                                    <Label Text="{Binding diagnosisName}" FontSize="15"/>
+                                    <Label Text="{Binding date.TimeOfDay, Converter={StaticResource TimeOfDayConverter}}" FontSize="15"/>
+                                </VerticalStackLayout>
                             </Grid>
                         </Border>
                     </ScrollView>

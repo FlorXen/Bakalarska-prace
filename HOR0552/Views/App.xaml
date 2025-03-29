@@ -11,6 +11,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:FirstIncompleteTreatmentStepConverter x:Key="FirstIncompleteTreatmentStepConverter"/>
             <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+            <local:TimeOfDayConverter x:Key="TimeOfDayConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
