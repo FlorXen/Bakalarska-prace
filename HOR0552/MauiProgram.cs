@@ -40,7 +40,20 @@ namespace HOR0552
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            return builder.Build();
+            builder.Services.AddSingleton<App>();
+            var app = builder.Build();
+            
+            var appInstance = app.Services.GetService<App>();
+            if (appInstance != null)
+            {
+                appInstance.PreloadCalendarPage(app.Services);
+            }
+            else
+            {
+                Console.WriteLine("App instance is null");
+            }
+            
+            return app;
         }
     }
 }

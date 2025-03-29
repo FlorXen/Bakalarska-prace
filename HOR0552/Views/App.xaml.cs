@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using HOR0552.ViewModels;
+using HOR0552.Views;
 
 namespace HOR0552
 {
@@ -29,6 +31,22 @@ namespace HOR0552
         {
             var window = new Window(new AppShell());
             return window;
+        }
+
+        public void PreloadCalendarPage(IServiceProvider services)
+        {
+            Task.Run(async () =>
+            {
+                var calendarPage = services.GetService<CalendarPage>();
+                if (calendarPage != null)
+                {
+                    // Předvykreslení stránky kalendáře
+                    await Application.Current.Dispatcher.DispatchAsync(() =>
+                    {
+                        var content = calendarPage.Content;
+                    });
+                }
+            });
         }
     }
 }

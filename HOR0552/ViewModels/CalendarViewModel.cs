@@ -35,6 +35,11 @@ public partial class CalendarViewModel : ObservableObject
 
     public void OnPageAppearing()
     {
+        PopulateEvents();
+    }
+
+    public void PopulateEvents()
+    {
         SelectedDate = null;
 
         LoadAllEvents();
