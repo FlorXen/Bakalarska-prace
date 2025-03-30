@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using HOR0552.Models;
 using HOR0552.Views;
 using System.Collections.ObjectModel;
+using System.Formats.Asn1;
 using System.Text.Json;
 
 namespace HOR0552.ViewModels;
@@ -93,8 +94,10 @@ public partial class StepResultPopupViewModel : ObservableObject
         var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
         var json = JsonSerializer.Serialize(diagnoses);
 
-        using var writer = new StreamWriter(filePath);
-        writer.Write(json);
+        using (var writer = new StreamWriter(filePath))
+        {
+            writer.Write(json);
+        }
     }
 
 }

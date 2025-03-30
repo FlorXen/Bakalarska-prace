@@ -43,8 +43,31 @@ public class FirstIncompleteTreatmentStepConverter : IValueConverter
                 }
             }
             return "léčba dokončena";
+        } else if (value is Diagnosis diagnosis)
+        {
+            Console.WriteLine("diagnosis");
+            foreach (TreatmentStep step in diagnosis.treatmentPlan)
+            {
+                if (nextStepNum == null || nextStepNum == step.step)
+                {
+                    if (step.isCompleted)
+                    {
+                        if (step.nextStep != null)
+                        {
+                            nextStepNum = step.nextStep;
+                            continue;
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+                    }
+                    else return "true";
+                }
+            }
         }
-        return "žádné kroky léčby";
+
+        return "true";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

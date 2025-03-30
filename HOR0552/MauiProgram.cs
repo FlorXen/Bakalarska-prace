@@ -40,6 +40,9 @@ namespace HOR0552
             builder.Services.AddSingleton<DiagnosisDetailCalendarPage>();
             builder.Services.AddSingleton<DiagnosisDetailCalendarViewModel>();
 
+            builder.Services.AddTransient<DiagnosisStepsPage>();
+            builder.Services.AddTransient<DiagnosisStepsViewModel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="HOR0552.Views.DiagnosisStepsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:HOR0552.Views"
+    xmlns:model="clr-namespace:HOR0552.Models"
+    xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
+    x:DataType="viewmodel:DiagnosisStepsViewModel" >
+    
+    <ContentPage.Content>
+        <CollectionView ItemsSource="{Binding SelectedDiagnosis.treatmentPlan}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:TreatmentStep">
+                    <Border BackgroundColor="{Binding ., Converter={StaticResource ColorFromTreatmentStepConverter}}">
+                        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, *" Margin="7">
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="{Binding step, StringFormat='Číslo kroku: {0}'}"
+                                   FontSize="15"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="{Binding deadlineInDays, StringFormat='Počet dní na splnění: {0}'}"
+                                   FontSize="15"/>
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Text="{Binding nextStep, StringFormat='Následující krok: {0}'}"
+                                   FontSize="15"/>
+
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="{Binding procedure.type, StringFormat='Typ procedůry: {0}'}"
+                                   FontSize="15"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding procedure.type, StringFormat='Název: {0}'}"
+                                   FontSize="15"/>
+                            <Label Grid.Row="2"
+                                   Grid.Column="1"
+                                   Text="{Binding procedure.doctorType, StringFormat='Doktor: {0}'}"
+                                   FontSize="15"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+                
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

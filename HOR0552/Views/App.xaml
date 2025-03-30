@@ -12,6 +12,10 @@
             <local:FirstIncompleteTreatmentStepConverter x:Key="FirstIncompleteTreatmentStepConverter"/>
             <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
             <local:TimeOfDayConverter x:Key="TimeOfDayConverter"/>
+            <local:GetDaysUntilDeadlineFromDiagnosisConverter x:Key="GetDaysUntilDeadlineFromDiagnosisConverter"/>
+            <local:GetDeadlineInDaysFromDiagnosisConverter x:Key="GetDeadlineInDaysFromDiagnosisConverter"/>
+            <local:DayUntilDeadlineToStringConverter x:Key="DayUntilDeadlineToStringConverter"/>
+            <local:ColorFromTreatmentStepConverter x:Key="ColorFromTreatmentStepConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

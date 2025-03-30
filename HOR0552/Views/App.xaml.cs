@@ -50,7 +50,7 @@ namespace HOR0552
                 var calendarPage2 = services.GetService<DiagnosisDetailCalendarPage>();
                 if (calendarPage2 != null)
                 {
-                    // Předvykreslení stránky kalendáře
+                    // Předvykreslení stránky kalendáře pro diagnozu
                     await Application.Current.Dispatcher.DispatchAsync(() =>
                     {
                         var content = calendarPage2.Content;

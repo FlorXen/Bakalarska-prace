@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HOR0552.Views.MainPage"
              xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
+             xmlns:controls="clr-namespace:HOR0552.Controls"
              xmlns:model="clr-namespace:HOR0552.Models"
              x:DataType="viewmodel:MainPageViewModel">
     
@@ -22,15 +23,15 @@
                         <SwipeView.RightItems>
                             <SwipeItem Text="Krok dokončen"
                                        BackgroundColor="LimeGreen"
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=NextStepCommand}"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ConfirmStepCommand}"
                                        CommandParameter="{Binding .}"/>
                         </SwipeView.RightItems>
-                        <Border>
+                        <Border BackgroundColor="White">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ShowDetailCommand}"
                                                        CommandParameter="{Binding .}"/>
                             </Border.GestureRecognizers>
-                            <Grid RowDefinitions="Auto, Auto" Padding="10">
+                            <Grid RowDefinitions="Auto, Auto, Auto" Padding="10">
                                 <Label Grid.Row="0" Text="{Binding name}" FontSize="25"/>
                                 <Label Grid.Row="1" FontSize="13">
                                     <Label.FormattedText>
@@ -40,11 +41,17 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                <controls:DeadlineBar Grid.Row="2"
+                                                      MaxValue="{Binding ., Converter={StaticResource GetDeadlineInDaysFromDiagnosisConverter}}"
+                                                      CurrentValue="{Binding ., Converter={StaticResource GetDaysUntilDeadlineFromDiagnosisConverter}}"
+                                                      HorizontalOptions="FillAndExpand"
+                                                      HeightRequest="10"
+                                                      IsVisible="{Binding ., Converter={StaticResource FirstIncompleteTreatmentStepConverter}}"/>
                             </Grid>
                         </Border>
                     </SwipeView>
                 </DataTemplate>
-			</CollectionView.ItemTemplate>
+            </CollectionView.ItemTemplate>
 		</CollectionView>
 
         <Button Grid.Row="1"

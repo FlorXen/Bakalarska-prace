@@ -40,11 +40,8 @@ public partial class MainPageViewModel : ObservableObject
     }
     [RelayCommand]
     async Task ShowDetail(Diagnosis diagnosis)
-    {/*
+    {
         await Shell.Current.GoToAsync(nameof(DiagnosisDetailPage), true,
-            new Dictionary<string, object> { { "SelectedDiagnosis", diagnosis } });
-        */
-        await Shell.Current.GoToAsync(nameof(DiagnosisDetailCalendarPage), true,
             new Dictionary<string, object> { { "SelectedDiagnosis", diagnosis } });
     }
 
@@ -59,7 +56,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NextStep(Diagnosis diagnosis)
+    private void ConfirmStep(Diagnosis diagnosis)
     {
         int? nextStepNum = null;
 
@@ -136,10 +133,20 @@ public partial class MainPageViewModel : ObservableObject
         {
             using var reader = new StreamReader(filePath);
             var json = reader.ReadToEnd();
-            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-            if (loadedDiagnoses != null)
+            if (json != "")
             {
-                Diagnoses = loadedDiagnoses;
+                var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+                if (loadedDiagnoses != null)
+                {
+                    Diagnoses = loadedDiagnoses;
+                }
+                else
+                {
+                    Diagnoses = new ObservableCollection<Diagnosis>();
+                }
+            } else
+            {
+                Diagnoses = new ObservableCollection<Diagnosis>();
             }
         }
         else
@@ -166,8 +173,10 @@ public partial class MainPageViewModel : ObservableObject
         var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
         var json = JsonSerializer.Serialize(diagnoses);
 
-        using var writer = new StreamWriter(filePath);
-        writer.Write(json);
+        using (var writer = new StreamWriter(filePath))
+        {
+            writer.Write(json);
+        }
     }
 }
 

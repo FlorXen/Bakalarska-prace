@@ -139,8 +139,10 @@ namespace HOR0552.ViewModels
             var filePath = Path.Combine(FileSystem.AppDataDirectory, "events.json");
             var json = JsonSerializer.Serialize(eventCollection);
 
-            using var writer = new StreamWriter(filePath);
-            writer.Write(json);
+            using (var writer = new StreamWriter(filePath))
+            {
+                writer.Write(json);
+            }
         }
     }
 }

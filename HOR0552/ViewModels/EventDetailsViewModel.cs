@@ -5,6 +5,7 @@ using HOR0552.Views;
 using Plugin.Maui.Calendar.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Formats.Asn1;
 using System.Globalization;
 using System.Runtime.ConstrainedExecution;
 using System.Text.Json;
@@ -82,8 +83,10 @@ public partial class EventDetailsViewModel : ObservableObject
         var filePath = Path.Combine(FileSystem.AppDataDirectory, "events.json");
         var json = JsonSerializer.Serialize(eventCollection);
 
-        using var writer = new StreamWriter(filePath);
-        writer.Write(json);
+        using (var writer = new StreamWriter(filePath))
+        {
+            writer.Write(json);
+        }
     }
 
     [RelayCommand]

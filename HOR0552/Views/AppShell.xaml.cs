@@ -20,6 +20,7 @@ namespace HOR0552
 
             Routing.RegisterRoute(nameof(DiagnosisDetailCalendarPage), typeof(DiagnosisDetailCalendarPage));
 
+            Routing.RegisterRoute(nameof(DiagnosisStepsPage), typeof(DiagnosisStepsPage));
         }
 
         
