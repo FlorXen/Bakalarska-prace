@@ -21,14 +21,17 @@ public partial class CalendarViewModel : ObservableObject
     [ObservableProperty]
     private DateTime? selectedDate;
 
+    [ObservableProperty]
+    private DateTime displayDate;
     public CalendarViewModel()
     {
         Events = new EventCollection { };
         SelectedDate = DateTime.Now;
+        DisplayDate = DateTime.Now;
         IsAddEventButtonVisible = false;
         eventCollection = new ObservableCollection<CalendarEvent>();
     }
-
+    
     public void OnPageAppearing()
     {
         SelectedDate = null;
@@ -200,5 +203,17 @@ public partial class CalendarViewModel : ObservableObject
             await Shell.Current.GoToAsync(nameof(EventDetailsPage), false,
                 new Dictionary<string, object> { { "SelectedEvent", calendarEvent } });
         }
+    }
+
+    [RelayCommand]
+    void PreviousMonth()
+    {
+        DisplayDate = DisplayDate.AddMonths(-1);
+    }
+
+    [RelayCommand]
+    void NextMonth()
+    {
+        DisplayDate = DisplayDate.AddMonths(1);
     }
 }

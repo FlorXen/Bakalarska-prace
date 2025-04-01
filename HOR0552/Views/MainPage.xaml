@@ -13,26 +13,26 @@
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Diagnosis">
-                    <SwipeView>
+                    <SwipeView Margin="3" Padding="0,0,0,3">
                         <SwipeView.LeftItems>
                             <SwipeItem Text="Odstranit"
-                                       BackgroundColor="Red"
+                                       BackgroundColor="{StaticResource Red}"
                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=DeleteCommand}"
                                        CommandParameter="{Binding .}"/>
                         </SwipeView.LeftItems>
                         <SwipeView.RightItems>
                             <SwipeItem Text="Krok dokončen"
-                                       BackgroundColor="LimeGreen"
+                                       BackgroundColor="{StaticResource Green}"
                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ConfirmStepCommand}"
                                        CommandParameter="{Binding .}"/>
                         </SwipeView.RightItems>
-                        <Border BackgroundColor="White">
+                        <Border>
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ShowDetailCommand}"
                                                        CommandParameter="{Binding .}"/>
                             </Border.GestureRecognizers>
                             <Grid RowDefinitions="Auto, Auto, Auto" Padding="10">
-                                <Label Grid.Row="0" Text="{Binding name}" FontSize="25"/>
+                                <Label Grid.Row="0" Text="{Binding name}" FontSize="25" FontAttributes="Bold"/>
                                 <Label Grid.Row="1" FontSize="13">
                                     <Label.FormattedText>
                                         <FormattedString>
@@ -42,9 +42,10 @@
                                     </Label.FormattedText>
                                 </Label>
                                 <controls:DeadlineBar Grid.Row="2"
+                                                      BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"
                                                       MaxValue="{Binding ., Converter={StaticResource GetDeadlineInDaysFromDiagnosisConverter}}"
                                                       CurrentValue="{Binding ., Converter={StaticResource GetDaysUntilDeadlineFromDiagnosisConverter}}"
-                                                      HorizontalOptions="FillAndExpand"
+                                                      HorizontalOptions="Fill"
                                                       HeightRequest="10"
                                                       IsVisible="{Binding ., Converter={StaticResource FirstIncompleteTreatmentStepConverter}}"/>
                             </Grid>

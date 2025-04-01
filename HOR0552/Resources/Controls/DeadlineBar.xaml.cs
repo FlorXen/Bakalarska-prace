@@ -1,4 +1,6 @@
-﻿namespace HOR0552.Controls;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace HOR0552.Controls;
 
 public partial class DeadlineBar : ContentView
 {

@@ -7,20 +7,21 @@ public class ColorFromTreatmentStepConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
+        var currentTheme = Application.Current.RequestedTheme;
 
         if (value is TreatmentStep step)
         {
             if (step.isCompleted)
             {
-                return "LightGreen";
+                return currentTheme == AppTheme.Dark ? "#398508" : "#59cf0c";
             } else if (step.stepDate != null)
             {
-                return "LightBlue";
-            } else return "LightGray";
+                return currentTheme == AppTheme.Dark ? "#0466cf" : "#0774e8";
+            } else return currentTheme == AppTheme.Dark ? "#121111" : "#c9c9c9";
         }
         else
         {
-            return "LightGray";
+            return currentTheme == AppTheme.Dark ? "#121111" : "#c9c9c9";
         }
     }
 

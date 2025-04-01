@@ -9,38 +9,41 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:model="clr-namespace:HOR0552.Models"
     xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Color="Transparent">
 
-    <Grid RowDefinitions="Auto, *, Auto"
+    <Border HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
+        <Grid RowDefinitions="Auto, *, Auto"
       ColumnSpacing="10"
       RowSpacing="10"
       Padding="10"
       BindingContext="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StepResultPopupViewModel}}}">
-        <Label Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Step.procedure.name}" FontSize="25"/>
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Step.nextSteps}" SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="*, Auto">
-                        <Label Grid.Column="0" FontSize="20">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="- " />
-                                    <Span Text="{Binding Key}" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Button Grid.Column="1"
+            <Label Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Step.procedure.name}" FontSize="25"/>
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Step.nextSteps}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label Grid.Column="0" FontSize="20">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="- " />
+                                        <Span Text="{Binding Key}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Button Grid.Column="1"
                                 Margin="5"
                                 Text="Vybrat"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StepResultPopupViewModel}}, Path=SelectResultCommand}"
                                 CommandParameter="{Binding Value}"
                                 Clicked="ClosePopup"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <Button Grid.Row="2"
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Grid.Row="2"
             Text="Zpět"
             Clicked="ClosePopup"/>
-    </Grid>
+        </Grid>
+    </Border>
 </toolkit:Popup>

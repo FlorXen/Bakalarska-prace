@@ -32,16 +32,16 @@ namespace HOR0552
             var window = new Window(new AppShell());
             return window;
         }
-
+        
         public void PreloadCalendarPage(IServiceProvider services)
-        {
+        {/*
             Task.Run(async () =>
             {
                 var calendarPage1 = services.GetService<CalendarPage>();
                 if (calendarPage1 != null)
                 {
                     // Předvykreslení stránky kalendáře
-                    await Application.Current.Dispatcher.DispatchAsync(() =>
+                    Application.Current.Dispatcher.DispatchAsync(() =>
                     {
                         var content = calendarPage1.Content;
                     });
@@ -51,12 +51,12 @@ namespace HOR0552
                 if (calendarPage2 != null)
                 {
                     // Předvykreslení stránky kalendáře pro diagnozu
-                    await Application.Current.Dispatcher.DispatchAsync(() =>
+                    Application.Current.Dispatcher.DispatchAsync(() =>
                     {
                         var content = calendarPage2.Content;
                     });
                 }
-            });
+            });*/
         }
     }
 }

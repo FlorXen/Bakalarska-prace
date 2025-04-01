@@ -8,21 +8,45 @@
              x:DataType="viewmodel:DiagnosisDetailCalendarViewModel">
 
     <Grid RowDefinitions="*, Auto">
-        <controls:Calendar Grid.Row="0"
+        <controls:Calendar
+            Grid.Row="0"
             Events="{Binding Events}"
             EventsScrollViewVisible="True"
             Culture="{Binding Culture}"
             VerticalOptions="Fill"
             HorizontalOptions="Fill"
-            SelectedDate="{Binding SelectedDate}">
+            SelectedDate="{Binding SelectedDate}"
+            ShownDate="{Binding DisplayDate}"
+            TodayOutlineColor="#0466cf"
+            DaysTitleColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+            DaysTitleWeekendColor="Red"
+            OtherMonthDayColor="Gray"
+            DeselectedDayTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+            EventIndicatorTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+            TodayTextColor="#0466cf"
+            FirstDayOfWeek="Monday"
+            WeekendDayColor="Red">
+
+            <controls:Calendar.HeaderSectionTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="70,10,70,10">
+                        <Button Grid.Column="0" CornerRadius="30" Text="◄" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailCalendarViewModel}}, Path=PreviousMonthCommand}" />
+                        <Label Grid.Column="1" Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailCalendarViewModel}}, Path=DisplayDate, StringFormat='{0:MMMM yyyy}'}"
+                               FontSize="18"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                        <Button Grid.Column="3" Text="►" CornerRadius="30" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailCalendarViewModel}}, Path=NextMonthCommand}"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:Calendar.HeaderSectionTemplate>
 
             <controls:Calendar.EventTemplate>
                 <DataTemplate x:DataType="model:CalendarEvent">
                     <ScrollView Orientation="Vertical">
-                        <Border>
+                        <Border Margin="5,2,5,2">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailCalendarViewModel}}, Path=EventTappedCommand}"
-                                       CommandParameter="{Binding .}"/>
+                                        CommandParameter="{Binding .}"/>
                             </Border.GestureRecognizers>
                             <Grid ColumnDefinitions="35, Auto" RowDefinitions="Auto" Padding="5">
                                 <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="{Binding color}" HeightRequest="35" WidthRequest="35" CornerRadius="17.5" HasShadow="False"/>

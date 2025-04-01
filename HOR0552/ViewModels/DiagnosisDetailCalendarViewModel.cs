@@ -26,11 +26,14 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
     [ObservableProperty]
     private DateTime? selectedDate;
 
+    [ObservableProperty]
+    private DateTime displayDate;
     public DiagnosisDetailCalendarViewModel()
     {
         Events = new EventCollection { };
 
         SelectedDate = DateTime.Now;
+        DisplayDate = DateTime.Now;
         IsAddEventButtonVisible = false;
         eventCollection = new ObservableCollection<CalendarEvent>();
     }
@@ -190,5 +193,17 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
             await Shell.Current.GoToAsync(nameof(EventDetailsPage), false,
                 new Dictionary<string, object> { { "SelectedEvent", calendarEvent } });
         }
+    }
+
+    [RelayCommand]
+    void PreviousMonth()
+    {
+        DisplayDate = DisplayDate.AddMonths(-1);
+    }
+
+    [RelayCommand]
+    void NextMonth()
+    {
+        DisplayDate = DisplayDate.AddMonths(1);
     }
 }

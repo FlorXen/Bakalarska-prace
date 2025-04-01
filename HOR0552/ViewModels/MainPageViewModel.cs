@@ -48,9 +48,9 @@ public partial class MainPageViewModel : ObservableObject
     [RelayCommand]
     private void Delete(Diagnosis diagnosis)
     {
-        if (diagnoses.Contains(diagnosis))
+        if (Diagnoses.Contains(diagnosis))
         {
-            diagnoses.Remove(diagnosis);
+            Diagnoses.Remove(diagnosis);
             updateSelectedDiagnoses();
         }
     }
@@ -136,7 +136,7 @@ public partial class MainPageViewModel : ObservableObject
             if (json != "")
             {
                 var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-                if (loadedDiagnoses != null)
+                if (loadedDiagnoses != null && loadedDiagnoses.Count > 0)
                 {
                     Diagnoses = loadedDiagnoses;
                 }
@@ -157,26 +157,26 @@ public partial class MainPageViewModel : ObservableObject
 
     private void updateSelectedDiagnoses()
     {
-        foreach (Diagnosis diagnosis in diagnoses)
-        {
-            foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
+            foreach (Diagnosis diagnosis in Diagnoses)
             {
-                if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
                 {
-                    treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
+                    if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                    {
+                        treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
 
-                    break;
+                        break;
+                    }
                 }
             }
-        }
 
-        var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
-        var json = JsonSerializer.Serialize(diagnoses);
+            var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
+            var json = JsonSerializer.Serialize(Diagnoses);
 
-        using (var writer = new StreamWriter(filePath))
-        {
-            writer.Write(json);
-        }
+            using (var writer = new StreamWriter(filePath))
+            {
+                writer.Write(json);
+            }
     }
 }
 

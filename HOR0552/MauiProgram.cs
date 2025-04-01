@@ -2,6 +2,7 @@
 using HOR0552.Views;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace HOR0552
 {
@@ -14,6 +15,18 @@ namespace HOR0552
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            }).ConfigureLifecycleEvents(events =>
+            {
+#if ANDROID
+                    events.AddAndroid(android =>
+                    {
+                        android.OnCreate((activity, bundle) =>
+                        {
+                            var window = activity.Window;
+                            window.SetStatusBarColor( Android.Graphics.Color.ParseColor("#1f1f1f"));
+                        });
+                    });
+#endif
             }).UseMauiCommunityToolkit();
 
             builder.Services.AddSingleton<MainPage>();

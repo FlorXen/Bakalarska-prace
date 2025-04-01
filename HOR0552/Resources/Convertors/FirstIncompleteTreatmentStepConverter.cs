@@ -45,7 +45,6 @@ public class FirstIncompleteTreatmentStepConverter : IValueConverter
             return "léčba dokončena";
         } else if (value is Diagnosis diagnosis)
         {
-            Console.WriteLine("diagnosis");
             foreach (TreatmentStep step in diagnosis.treatmentPlan)
             {
                 if (nextStepNum == null || nextStepNum == step.step)
