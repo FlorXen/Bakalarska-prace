@@ -25,6 +25,7 @@ public partial class CalendarViewModel : ObservableObject
     private DateTime displayDate;
     public CalendarViewModel()
     {
+        Diagnoses = new ObservableCollection<Diagnosis>();
         Events = new EventCollection { };
         SelectedDate = DateTime.Now;
         DisplayDate = DateTime.Now;
@@ -34,7 +35,7 @@ public partial class CalendarViewModel : ObservableObject
     
     public void OnPageAppearing()
     {
-        SelectedDate = null;
+        SelectedDate = DateTime.Now;
         LoadAllEvents();
         LoadSelectedDiagnoses();
         PopulateEvents();
@@ -43,45 +44,50 @@ public partial class CalendarViewModel : ObservableObject
     public void PopulateEvents()
     {
         Events.Clear();
-
-        foreach (Diagnosis diagnosis in Diagnoses)
+        if (Diagnoses != null && Diagnoses.Count > 0)
         {
-            foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
+            foreach (Diagnosis diagnosis in Diagnoses)
             {
-                if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                if (diagnosis.treatmentPlan != null && diagnosis.treatmentPlan.Count > 0)
                 {
-                    DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
-
-                    if (!Events.ContainsKey(deadlineDate))
+                    foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
                     {
-                        Events.Add(deadlineDate, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = diagnosis.diagnosisId,
-                            diagnosisName = diagnosis.name,
-                            name = "Konečný termín pro krok " + treatmentStep.procedure.name,
-                            date = deadlineDate,
-                            location = "",
-                            description = "",
-                            color = "Red" } })
+                        if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
                         {
-                            EventIndicatorColor = Colors.Red,
-                            EventIndicatorSelectedColor = Colors.Red,
-                            EventIndicatorSelectedTextColor = Colors.Red
-                        });
-                    }
-                    else if (Events[deadlineDate] is DayEventCollection<CalendarEvent> eventList)
-                    {
-                        eventList.Add(new CalendarEvent
-                        {
-                            diagnosisId = diagnosis.diagnosisId,
-                            diagnosisName = diagnosis.name,
-                            name = "Konečný termín pro krok " + treatmentStep.procedure.name,
-                            date = deadlineDate,
-                            location = "",
-                            description = "",
-                            color = "Red"
-                        });
-                    }
+                            DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
 
-                    break;
+                            if (!Events.ContainsKey(deadlineDate))
+                            {
+                                Events.Add(deadlineDate, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = diagnosis.diagnosisId,
+                                    diagnosisName = diagnosis.name,
+                                    name = "Konečný termín pro krok " + treatmentStep.procedure.name,
+                                    date = deadlineDate,
+                                    location = "",
+                                    description = "",
+                                    color = "Red" } })
+                                {
+                                    EventIndicatorColor = Colors.Red,
+                                    EventIndicatorSelectedColor = Colors.Red,
+                                    EventIndicatorSelectedTextColor = Colors.Red
+                                });
+                            }
+                            else if (Events[deadlineDate] is DayEventCollection<CalendarEvent> eventList)
+                            {
+                                eventList.Add(new CalendarEvent
+                                {
+                                    diagnosisId = diagnosis.diagnosisId,
+                                    diagnosisName = diagnosis.name,
+                                    name = "Konečný termín pro krok " + treatmentStep.procedure.name,
+                                    date = deadlineDate,
+                                    location = "",
+                                    description = "",
+                                    color = "Red"
+                                });
+                            }
+
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -164,10 +170,21 @@ public partial class CalendarViewModel : ObservableObject
         {
             using var reader = new StreamReader(filePath);
             var json = reader.ReadToEnd();
-            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-            if (loadedDiagnoses != null)
+            if (json != "")
             {
-                Diagnoses = loadedDiagnoses;
+                var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+                if (loadedDiagnoses != null && loadedDiagnoses.Count > 0)
+                {
+                    Diagnoses = loadedDiagnoses;
+                }
+                else
+                {
+                    Diagnoses = new ObservableCollection<Diagnosis>();
+                }
+            }
+            else
+            {
+                Diagnoses = new ObservableCollection<Diagnosis>();
             }
         }
         else

@@ -7,73 +7,79 @@
              xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar" 
              x:DataType="viewmodel:CalendarViewModel">
 
-    <Grid RowDefinitions="*, Auto">
-        <controls:Calendar
-            Grid.Row="0"
-            Events="{Binding Events}"
-            EventsScrollViewVisible="True"
-            Culture="{Binding Culture}"
-            VerticalOptions="Fill"
-            HorizontalOptions="Fill"
-            SelectedDate="{Binding SelectedDate}"
-            ShownDate="{Binding DisplayDate}"
-            TodayOutlineColor="#0466cf"
-            DaysTitleColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
-            DaysTitleWeekendColor="Red"
-            OtherMonthDayColor="Gray"
-            DeselectedDayTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
-            EventIndicatorTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
-            TodayTextColor="#0466cf"
-            FirstDayOfWeek="Monday"
-            WeekendDayColor="Red">
+    <Border>
+        <Grid RowDefinitions="*, Auto">
+            <controls:Calendar
+                Grid.Row="0"
+                Events="{Binding Events}"
+                EventsScrollViewVisible="True"
+                Culture="{Binding Culture}"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                SelectedDate="{Binding SelectedDate}"
+                ShownDate="{Binding DisplayDate}"
+                TodayOutlineColor="#0466cf"
+                DaysTitleColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+                DaysTitleWeekendColor="Red"
+                OtherMonthDayColor="Gray"
+                DeselectedDayTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+                EventIndicatorTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+                TodayTextColor="#0466cf"
+                FirstDayOfWeek="Monday"
+                WeekendDayColor="Red"
+                SwipeLeftCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=PreviousMonthCommand}"
+                SwipeRightCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=NextMonthCommand}">
 
-            <controls:Calendar.HeaderSectionTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="70,10,70,10">
-                        <Button Grid.Column="0" CornerRadius="30" Text="◄" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=PreviousMonthCommand}" />
-                        <Label Grid.Column="1" Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=DisplayDate, StringFormat='{0:MMMM yyyy}'}"
-                               FontSize="18"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center" />
-                        <Button Grid.Column="3" Text="►" CornerRadius="30" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=NextMonthCommand}"/>
-                    </Grid>
-                </DataTemplate>
-            </controls:Calendar.HeaderSectionTemplate>
+                <controls:Calendar.HeaderSectionTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="Auto,*,Auto" Padding="70,-10,70,10">
+                            <Button Grid.Column="0" CornerRadius="30" Text="◄" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=PreviousMonthCommand}" />
+                            <Label Grid.Column="1" Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=DisplayDate, StringFormat='{0:MMMM yyyy}'}"
+                                   FontSize="18"
+                                   TextColor="{AppThemeBinding Light={StaticResource ButtonPrimary}, Dark={StaticResource ButtonPrimary}}"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                            <Button Grid.Column="3" Text="►" CornerRadius="30" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=NextMonthCommand}"/>
+                        </Grid>
+                    </DataTemplate>
+                </controls:Calendar.HeaderSectionTemplate>
 
-            <controls:Calendar.EventTemplate>
-                <DataTemplate x:DataType="model:CalendarEvent">
-                    <ScrollView Orientation="Vertical">
-                        <Border Margin="5,2,5,2">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=EventTappedCommand}"
-                                       CommandParameter="{Binding .}"/>
-                            </Border.GestureRecognizers>
-                            <Grid ColumnDefinitions="35, Auto" RowDefinitions="Auto" Padding="5">
-                                <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="{Binding color}" HeightRequest="35" WidthRequest="35" CornerRadius="17.5" HasShadow="False"/>
-                                <VerticalStackLayout Grid.Row="0" Grid.Column="1" Margin="10,0,0,0">
-                                    <Label Text="{Binding name}" FontAttributes="Bold" FontSize="17"/>
-                                    <Label Text="{Binding diagnosisName}" FontSize="15"/>
-                                    <Label Text="{Binding date.TimeOfDay, Converter={StaticResource TimeOfDayConverter}}" FontSize="15"/>
-                                </VerticalStackLayout>
-                            </Grid>
-                        </Border>
-                    </ScrollView>
-                </DataTemplate>
-            </controls:Calendar.EventTemplate>
-            <controls:Calendar.EmptyTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <Label Text="ŽÁDNÉ UDÁLOSTI" HorizontalTextAlignment="Center" Margin="0,5,0,5" />
-                    </StackLayout>
-                </DataTemplate>
-            </controls:Calendar.EmptyTemplate>
-        </controls:Calendar>
-        
-        <Button Grid.Row="1"
-                Text="Přidat událost" 
-                Command="{Binding AddEventCommand}" 
-                IsVisible="{Binding IsAddEventButtonVisible}"
-                HorizontalOptions="Center"
-                Margin="10"/>
-    </Grid>
+                <controls:Calendar.EventTemplate>
+                    <DataTemplate x:DataType="model:CalendarEvent">
+                        <ScrollView Orientation="Vertical">
+                            <Border Margin="5,2,5,2">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=EventTappedCommand}"
+                                   CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="35, Auto" RowDefinitions="Auto" Padding="5">
+                                    <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="{Binding color}" HeightRequest="35" WidthRequest="35" CornerRadius="17.5" HasShadow="False"/>
+                                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Margin="10,0,0,0">
+                                        <Label Text="{Binding name}" FontAttributes="Bold" FontSize="17"/>
+                                        <Label Text="{Binding diagnosisName}" FontSize="15"/>
+                                        <Label Text="{Binding date.TimeOfDay, Converter={StaticResource TimeOfDayConverter}}" FontSize="15"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </ScrollView>
+                    </DataTemplate>
+                </controls:Calendar.EventTemplate>
+                <controls:Calendar.EmptyTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="ŽÁDNÉ UDÁLOSTI" HorizontalTextAlignment="Center" Margin="0,5,0,5" />
+                        </StackLayout>
+                    </DataTemplate>
+                </controls:Calendar.EmptyTemplate>
+            </controls:Calendar>
+
+            <Button Grid.Row="1"
+            Text="Přidat událost" 
+            Command="{Binding AddEventCommand}" 
+            IsVisible="{Binding IsAddEventButtonVisible}"
+            HorizontalOptions="Center"
+            Margin="10"/>
+        </Grid>
+    </Border>
 </ContentPage>

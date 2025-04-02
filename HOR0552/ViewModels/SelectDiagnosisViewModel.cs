@@ -63,15 +63,27 @@ public partial class SelectDiagnosisViewModel : ObservableObject
 
     private void LoadSelectedDiagnoses()
     {
+
         var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
         if (File.Exists(filePath))
         {
             using var reader = new StreamReader(filePath);
             var json = reader.ReadToEnd();
-            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-            if (loadedDiagnoses != null)
+            if (json != "")
             {
-                SelectedDiagnoses = loadedDiagnoses;
+                var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+                if (loadedDiagnoses != null && loadedDiagnoses.Count > 0)
+                {
+                    SelectedDiagnoses = loadedDiagnoses;
+                }
+                else
+                {
+                    SelectedDiagnoses = new ObservableCollection<Diagnosis>();
+                }
+            }
+            else
+            {
+                SelectedDiagnoses = new ObservableCollection<Diagnosis>();
             }
         }
         else

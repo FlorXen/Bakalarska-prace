@@ -45,15 +45,27 @@ namespace HOR0552.ViewModels
         ObservableCollection<Diagnosis> diagnoses;
 
         ObservableCollection<CalendarEvent> eventCollection;
-        async public void OnPageAppearing()
+
+        [ObservableProperty]
+        ObservableCollection<string> eventColors;
+        public void OnPageAppearing()
         {
-                EventTitle = EditedEvent.name;
-                IsAllDay = EditedEvent.date.TimeOfDay == TimeSpan.Zero;
-                EventDate = EditedEvent.date;
-                EventTime = EditedEvent.date.TimeOfDay;
-                Location = EditedEvent.location;
-                Notes = EditedEvent.description;
-                SelectedDate = EventDate.Date.Add(EventTime);
+            EventColors =
+            [
+                "Modrá",
+                "Červená",
+                "Zelená",
+                "Žlutá",
+                "Fialová"
+            ];
+            EventTitle = EditedEvent.name;
+            IsAllDay = EditedEvent.date.TimeOfDay == TimeSpan.Zero;
+            EventDate = EditedEvent.date;
+            EventTime = EditedEvent.date.TimeOfDay;
+            Location = EditedEvent.location;
+            Notes = EditedEvent.description;
+            SelectedDate = EventDate.Date.Add(EventTime);
+
             string clr;
                 switch (EditedEvent.color)
                 {
@@ -102,17 +114,30 @@ namespace HOR0552.ViewModels
             {
                 using var reader = new StreamReader(filePath);
                 var json = reader.ReadToEnd();
-                var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-                if (loadedDiagnoses != null)
+                if (json != "")
                 {
-                    Diagnoses = loadedDiagnoses;
+                    var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+                    if (loadedDiagnoses != null && loadedDiagnoses.Count > 0)
+                    {
+                        Diagnoses = loadedDiagnoses;
+                        Diagnoses.Add(new Diagnosis { diagnosisId = "", name = "Bez diagnózy", currentStepNum = 0, startDate = null, treatmentPlan = new List<TreatmentStep>() });
+                    }
+                    else
+                    {
+                        Diagnoses = new ObservableCollection<Diagnosis>();
+                        Diagnoses.Add(new Diagnosis { diagnosisId = "", name = "Bez diagnózy", currentStepNum = 0, startDate = null, treatmentPlan = new List<TreatmentStep>() });
+                    }
+                }
+                else
+                {
+                    Diagnoses = new ObservableCollection<Diagnosis>();
                     Diagnoses.Add(new Diagnosis { diagnosisId = "", name = "Bez diagnózy", currentStepNum = 0, startDate = null, treatmentPlan = new List<TreatmentStep>() });
                 }
             }
             else
             {
                 Diagnoses = new ObservableCollection<Diagnosis>();
-                Diagnoses.Add(new Diagnosis { diagnosisId = "", name = "Bez diagnózy", currentStepNum = 0, startDate = null, treatmentPlan = new List<TreatmentStep>()});
+                Diagnoses.Add(new Diagnosis { diagnosisId = "", name = "Bez diagnózy", currentStepNum = 0, startDate = null, treatmentPlan = new List<TreatmentStep>() });
             }
         }
 
@@ -153,6 +178,7 @@ namespace HOR0552.ViewModels
                 color = clr
             };
 
+            if(eventCollection != null)
             for (int i = 0; i < eventCollection.Count; i++)
             {
                 var currentEvent = eventCollection[i];

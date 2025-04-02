@@ -20,45 +20,46 @@
                      Priority="0"/>
     </ContentPage.ToolbarItems>
     
-    <Grid Padding="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Border VerticalOptions="Start">
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
-                BackgroundColor="{Binding SelectedEvent.color}"/>
+            <Border Grid.Row="0"
+                    BackgroundColor="{Binding SelectedEvent.color}"/>
         
-        <Label Grid.Row="1"
-               Text="{Binding SelectedEvent.diagnosisName}"
-               FontSize="28"
-               FontAttributes="Bold"
-               Padding="0,10,0,5"/>
+            <Label Grid.Row="1"
+                   Text="{Binding SelectedEvent.diagnosisName}"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   Padding="0,10,0,5"/>
         
-        <Label Grid.Row="2"
-               Text="{Binding SelectedEvent.name}"
-               FontSize="28"
-               FontAttributes="Bold"
-               Padding="0,10,0,5"/>
+            <Label Grid.Row="2"
+                   Text="{Binding SelectedEvent.name}"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   Padding="0,10,0,5"/>
 
-        <Label Grid.Row="3"
-               Text="{Binding FormatedDate}"
-               FontSize="22"
-               TextColor="Gray"/>
+            <Label Grid.Row="3"
+                   Text="{Binding FormatedDate}"
+                   FontSize="22"
+                   TextColor="Gray"/>
 
-        <Label Grid.Row="4"
-               Text="{Binding SelectedEvent.location}"
-               FontSize="22"
-               TextColor="Gray"/>
+            <Label Grid.Row="4"
+                   Text="{Binding SelectedEvent.location}"
+                   FontSize="22"
+                   TextColor="Gray"/>
 
-        <Label Grid.Row="5"
-               Text="{Binding SelectedEvent.description}"
-               FontSize="22"
-               TextColor="Gray"/>
-
-    </Grid>
+            <Label Grid.Row="5"
+                   Text="{Binding SelectedEvent.description}"
+                   FontSize="22"
+                   TextColor="Gray"/>
+        </Grid>
+    </Border>
 </ContentPage>

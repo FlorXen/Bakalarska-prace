@@ -7,57 +7,85 @@
              xmlns:model="clr-namespace:HOR0552.Models"
              x:DataType="viewmodel:MainPageViewModel">
     
-	<Grid RowDefinitions="*, Auto"
-		  Padding="10">
-        <CollectionView ItemsSource="{Binding Diagnoses}"
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Diagnosis">
-                    <SwipeView Margin="3" Padding="0,0,0,3">
-                        <SwipeView.LeftItems>
-                            <SwipeItem Text="Odstranit"
-                                       BackgroundColor="{StaticResource Red}"
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=DeleteCommand}"
-                                       CommandParameter="{Binding .}"/>
-                        </SwipeView.LeftItems>
-                        <SwipeView.RightItems>
-                            <SwipeItem Text="Krok dokončen"
-                                       BackgroundColor="{StaticResource Green}"
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ConfirmStepCommand}"
-                                       CommandParameter="{Binding .}"/>
-                        </SwipeView.RightItems>
-                        <Border>
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ShowDetailCommand}"
-                                                       CommandParameter="{Binding .}"/>
-                            </Border.GestureRecognizers>
-                            <Grid RowDefinitions="Auto, Auto, Auto" Padding="10">
-                                <Label Grid.Row="0" Text="{Binding name}" FontSize="25" FontAttributes="Bold"/>
-                                <Label Grid.Row="1" FontSize="13">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="Další krok léčby: " />
-                                            <Span Text="{Binding treatmentPlan, Converter={StaticResource FirstIncompleteTreatmentStepConverter}}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <controls:DeadlineBar Grid.Row="2"
-                                                      BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"
-                                                      MaxValue="{Binding ., Converter={StaticResource GetDeadlineInDaysFromDiagnosisConverter}}"
-                                                      CurrentValue="{Binding ., Converter={StaticResource GetDaysUntilDeadlineFromDiagnosisConverter}}"
-                                                      HorizontalOptions="Fill"
-                                                      HeightRequest="10"
-                                                      IsVisible="{Binding ., Converter={StaticResource FirstIncompleteTreatmentStepConverter}}"/>
-                            </Grid>
-                        </Border>
-                    </SwipeView>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-		</CollectionView>
+	<Grid RowDefinitions="*, Auto">
+        <Border>
+            <CollectionView ItemsSource="{Binding Diagnoses}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Diagnosis">
+                        <SwipeView Margin="3" Padding="0,0,0,3">
+                            <SwipeView.LeftItems>
+                                <SwipeItem Text="Odstranit"
+                               BackgroundColor="{StaticResource Red}"
+                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=DeleteCommand}"
+                               CommandParameter="{Binding .}"/>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItem Text="Krok dokončen"
+                               BackgroundColor="{StaticResource Green}"
+                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ConfirmStepCommand}"
+                               CommandParameter="{Binding .}"/>
+                            </SwipeView.RightItems>
+                            <Border Style="{StaticResource SecondaryBorder}"
+                                    Margin="5,2,5,2">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ShowDetailCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <Grid RowDefinitions="Auto, Auto, Auto" Padding="10">
+                                    <Label Grid.Row="0" Text="{Binding name}" FontSize="25" FontAttributes="Bold"/>
+                                    <Label Grid.Row="1" FontSize="13">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Další krok léčby: " />
+                                                <Span Text="{Binding treatmentPlan, Converter={StaticResource FirstIncompleteTreatmentStepConverter}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <controls:DeadlineBar Grid.Row="2"
+                                              BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource SecondaryDark}}"
+                                              MaxValue="{Binding ., Converter={StaticResource GetDeadlineInDaysFromDiagnosisConverter}}"
+                                              CurrentValue="{Binding ., Converter={StaticResource GetDaysUntilDeadlineFromDiagnosisConverter}}"
+                                              HorizontalOptions="Fill"
+                                              HeightRequest="10"
+                                              IsVisible="{Binding ., Converter={StaticResource FirstIncompleteTreatmentStepConverter}}"/>
+                                </Grid>
+                            </Border>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
 
-        <Button Grid.Row="1"
-				Text="Přidat diagnózu"
-				Command="{Binding AddDiagnosisCommand}"
-				Margin="5"/>
+        <Border Grid.Row="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Padding="60,0,60,0">
+            <Border Style="{StaticResource SecondaryBorder}"
+                    Padding="10,0,10,3"
+                    HorizontalOptions="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label 
+                        Text="Přidat diagnózu"
+                        TextColor="{StaticResource ButtonText}"
+                        FontAttributes="Bold"
+                        VerticalOptions="End"
+                        HorizontalTextAlignment="Center" 
+                        VerticalTextAlignment="End"/>
+                    <ImageButton 
+                        Source="add_icon.png"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        Padding="0, 5, 0, 17"
+                        HeightRequest="50"
+                        WidthRequest="50"
+                        Command="{Binding AddDiagnosisCommand}"/>
+                </Grid>
+            </Border>
+        </Border>
+        
     </Grid>
 </ContentPage>

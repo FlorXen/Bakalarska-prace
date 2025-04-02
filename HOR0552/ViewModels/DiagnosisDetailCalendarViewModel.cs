@@ -31,7 +31,7 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
     public DiagnosisDetailCalendarViewModel()
     {
         Events = new EventCollection { };
-
+        Diagnoses = new ObservableCollection<Diagnosis>();
         SelectedDate = DateTime.Now;
         DisplayDate = DateTime.Now;
         IsAddEventButtonVisible = false;
@@ -40,7 +40,7 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
 
     public void OnPageAppearing()
     {
-        SelectedDate = null;
+        SelectedDate = DateTime.Now;
         LoadAllEvents();
         PopulateEvents();
     }

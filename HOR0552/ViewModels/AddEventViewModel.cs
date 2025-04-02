@@ -42,8 +42,22 @@ namespace HOR0552.ViewModels
         ObservableCollection<Diagnosis> diagnoses;
 
         ObservableCollection<CalendarEvent> eventCollection;
+
+        [ObservableProperty]
+        ObservableCollection<string> eventColors;
+
         public void OnPageAppearing()
         {
+            EventColors =
+            [
+                "Modrá",
+                "Èervená",
+                "Zelená",
+                "Žlutá",
+                "Fialová"
+            ];
+
+            SelectedColor = "Modrá";
             EventDate = SelectedDate;
             EventTime = DateTime.Now.TimeOfDay;
 

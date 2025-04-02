@@ -34,7 +34,7 @@ namespace HOR0552
         }
         
         public void PreloadCalendarPage(IServiceProvider services)
-        {/*
+        {
             Task.Run(async () =>
             {
                 var calendarPage1 = services.GetService<CalendarPage>();
@@ -56,7 +56,7 @@ namespace HOR0552
                         var content = calendarPage2.Content;
                     });
                 }
-            });*/
+            });
         }
     }
 }

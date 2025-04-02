@@ -64,10 +64,21 @@ public partial class StepResultPopupViewModel : ObservableObject
         {
             using var reader = new StreamReader(filePath);
             var json = reader.ReadToEnd();
-            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
-            if (loadedDiagnoses != null)
+            if (json != "")
             {
-                diagnoses = loadedDiagnoses;
+                var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+                if (loadedDiagnoses != null && loadedDiagnoses.Count > 0)
+                {
+                    diagnoses = loadedDiagnoses;
+                }
+                else
+                {
+                    diagnoses = new ObservableCollection<Diagnosis>();
+                }
+            }
+            else
+            {
+                diagnoses = new ObservableCollection<Diagnosis>();
             }
         }
         else
@@ -78,17 +89,22 @@ public partial class StepResultPopupViewModel : ObservableObject
 
     private void updateSelectedDiagnoses()
     {
-
-        foreach (Diagnosis diagnosis in diagnoses)
+        if (diagnoses != null && diagnoses.Count > 0)
         {
-                foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
+            foreach (Diagnosis diagnosis in diagnoses)
+            {
+                if (diagnosis.treatmentPlan != null && diagnosis.treatmentPlan.Count > 0)
                 {
-                    if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                    foreach (TreatmentStep treatmentStep in diagnosis.treatmentPlan)
                     {
-                        treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
-                    break;
+                        if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                        {
+                            treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
+                            break;
+                        }
                     }
                 }
+            }
         }
 
         var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");

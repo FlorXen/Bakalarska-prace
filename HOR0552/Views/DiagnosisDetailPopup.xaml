@@ -13,38 +13,41 @@
     mc:Ignorable="d"
     Color="Transparent">
 
-    <Border HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
-        <Grid RowDefinitions="Auto, Auto, *, Auto"
-          ColumnDefinitions=".50*, .50*"
-          ColumnSpacing="10"
-          Padding="15"
-          BindingContext="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailPopupViewModel}}}">
-            <Label Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Diagnosis.name}" FontSize="25"/>
-            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="Průběh léčby:" FontSize="20"/>
-            <CollectionView Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding Diagnosis.treatmentPlan}" SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:TreatmentStep">
-                        <Label FontSize="15">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="- " />
-                                    <Span Text="{Binding procedure.name}" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <Button Grid.Row="3"
-                Text="Zpět"
-                Clicked="ClosePopup"
-                Margin="0,8,0,8"/>
-            <Button Grid.Row="3"
-                Grid.Column="1"
-                Text="Vybrat"
-                Command="{Binding SelectDiagnosisCommand}"
-                Clicked="ClosePopup"
-                Margin="0,8,0,8"/>
-        </Grid>
+    <Border Padding="20" BackgroundColor="Transparent" Stroke="Transparent" StrokeThickness="0">
+        <Border HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
+            <Grid RowDefinitions="Auto, Auto, *, Auto"
+                  ColumnDefinitions=".50*, .50*"
+                  ColumnSpacing="10"
+                  Padding="15"
+                  BindingContext="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailPopupViewModel}}}">
+                <Label Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Diagnosis.name}" FontSize="25"/>
+                <Label Grid.Row="1" Grid.ColumnSpan="2" Text="Průběh léčby:" FontSize="20"/>
+                <CollectionView Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding Diagnosis.treatmentPlan}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:TreatmentStep">
+                            <Label FontSize="15">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="- " />
+                                        <Span Text="{Binding procedure.name}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Button Grid.Row="3"
+            Text="Zpět"
+            Clicked="ClosePopup"
+            Margin="0,8,0,8"/>
+                <Button Grid.Row="3"
+            Grid.Column="1"
+            Text="Vybrat"
+            Command="{Binding SelectDiagnosisCommand}"
+            Clicked="ClosePopup"
+            Margin="0,8,0,8"/>
+            </Grid>
+        </Border>
     </Border>
+    
 </toolkit:Popup>

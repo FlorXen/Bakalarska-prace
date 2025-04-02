@@ -12,38 +12,58 @@
     mc:Ignorable="d"
     Color="Transparent">
 
-    <Border HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
-        <Grid RowDefinitions="Auto, *, Auto"
-      ColumnSpacing="10"
-      RowSpacing="10"
-      Padding="10"
-      BindingContext="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StepResultPopupViewModel}}}">
-            <Label Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Step.procedure.name}" FontSize="25"/>
-            <CollectionView Grid.Row="1" ItemsSource="{Binding Step.nextSteps}" SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid ColumnDefinitions="*, Auto">
-                            <Label Grid.Column="0" FontSize="20">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="- " />
-                                        <Span Text="{Binding Key}" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Button Grid.Column="1"
-                                Margin="5"
-                                Text="Vybrat"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StepResultPopupViewModel}}, Path=SelectResultCommand}"
-                                CommandParameter="{Binding Value}"
-                                Clicked="ClosePopup"/>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <Button Grid.Row="2"
-            Text="Zpět"
-            Clicked="ClosePopup"/>
-        </Grid>
-    </Border>
+    <Border Padding="20" BackgroundColor="Transparent">
+        <Border HorizontalOptions="Center" VerticalOptions="Center" Style="{StaticResource SecondaryBorder}">
+            <Grid RowDefinitions="Auto, *, Auto"
+                  RowSpacing="10"
+                  MaximumWidthRequest="350"
+                  BindingContext="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StepResultPopupViewModel}}}">
+                
+                <Label Grid.Row="0"
+                       Text="{Binding Step.procedure.name}"
+                       FontSize="25"
+                       Margin="10,10,0,0"/>
+                
+                <Border Grid.Row="1"
+                        Margin="5,5,5,-5">
+                    
+                    <CollectionView ItemsSource="{Binding Step.nextSteps}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="0.5*, 0.7*">
+                                    <Label Grid.Column="0"
+                                           FontSize="20"
+                                           Margin="10,5,-30,10"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Start">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="- " />
+                                                <Span Text="{Binding Key}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Button Grid.Column="1"
+                                        Margin="0,10,5,10"
+                                        Text="Vybrat"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StepResultPopupViewModel}}, Path=SelectResultCommand}"
+                                        CommandParameter="{Binding Value}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                        Clicked="ClosePopup"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+                <Border Grid.Row="2">
+                    <Button Text="Zpět"
+                            VerticalOptions="Center"
+                            Margin="60,3,60,3"
+                            Clicked="ClosePopup"/>
+                </Border>
+            </Grid>
+        </Border>
+     </Border>
 </toolkit:Popup>

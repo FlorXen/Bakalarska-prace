@@ -94,6 +94,7 @@ public partial class EventDetailsViewModel : ObservableObject
     {
         LoadAllEvents();
 
+        if(eventCollection != null)
         for (int i = 0; i < eventCollection.Count; i++)
         {
             var currentEvent = eventCollection[i];

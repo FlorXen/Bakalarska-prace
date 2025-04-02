@@ -51,33 +51,54 @@ public partial class DiagnosisDetailViewModel : ObservableObject
 
         // Načtení díagnóz
 
-        var filePathRead = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
-        if (File.Exists(filePathRead))
+        var filePath = Path.Combine(FileSystem.AppDataDirectory, "selected_diagnoses.json");
+        if (File.Exists(filePath))
         {
-            using var reader = new StreamReader(filePathRead);
-            var jsonReader = reader.ReadToEnd();
-            var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(jsonReader);
-            if (loadedDiagnoses != null)
+            using var reader = new StreamReader(filePath);
+            var json = reader.ReadToEnd();
+            if (json != "")
             {
-                Diagnoses = loadedDiagnoses;
+                var loadedDiagnoses = JsonSerializer.Deserialize<ObservableCollection<Diagnosis>>(json);
+                if (loadedDiagnoses != null && loadedDiagnoses.Count > 0)
+                {
+                    Diagnoses = loadedDiagnoses;
+                }
+                else
+                {
+                    Diagnoses = new ObservableCollection<Diagnosis>();
+                }
+            }
+            else
+            {
+                Diagnoses = new ObservableCollection<Diagnosis>();
             }
         }
-
-        for (int i = 0; i < Diagnoses.Count; i++)
+        else
         {
-            if (Diagnoses[i].diagnosisId == SelectedDiagnosis.diagnosisId)
+            Diagnoses = new ObservableCollection<Diagnosis>();
+        }
+
+        if (Diagnoses != null && Diagnoses.Count > 0)
+        {
+            for (int i = 0; i < Diagnoses.Count; i++)
             {
-                SelectedDiagnosis = Diagnoses[i];
-                foreach (TreatmentStep treatmentStep in SelectedDiagnosis.treatmentPlan)
+                if (Diagnoses[i].diagnosisId == SelectedDiagnosis.diagnosisId)
                 {
-                    if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                    SelectedDiagnosis = Diagnoses[i];
+                    if (SelectedDiagnosis.treatmentPlan != null && SelectedDiagnosis.treatmentPlan.Count > 0)
                     {
-                        treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
-                        CurrentStep = treatmentStep;
-                        break;
+                        foreach (TreatmentStep treatmentStep in SelectedDiagnosis.treatmentPlan)
+                        {
+                            if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                            {
+                                treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
+                                CurrentStep = treatmentStep;
+                                break;
+                            }
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
     }
@@ -100,24 +121,27 @@ public partial class DiagnosisDetailViewModel : ObservableObject
         }
 
         // Aktualizace díagnózy
-
-        for (int i = 0; i < Diagnoses.Count; i++)
+        if (Diagnoses != null && Diagnoses.Count > 0)
         {
-            if (Diagnoses[i].diagnosisId == SelectedDiagnosis.diagnosisId)
+            for (int i = 0; i < Diagnoses.Count; i++)
             {
-
-                foreach (TreatmentStep treatmentStep in SelectedDiagnosis.treatmentPlan)
+                if (Diagnoses[i].diagnosisId == SelectedDiagnosis.diagnosisId)
                 {
-
-                    if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                    if (SelectedDiagnosis.treatmentPlan != null && SelectedDiagnosis.treatmentPlan.Count > 0)
                     {
-                        treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
-                        CurrentStep = treatmentStep;
-                        break;
+                        foreach (TreatmentStep treatmentStep in SelectedDiagnosis.treatmentPlan)
+                        {
+                            if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
+                            {
+                                treatmentStep.daysUntilDeadline = (int)(treatmentStep.stepDate.Value.AddDays(treatmentStep.deadlineInDays) - DateTime.Now.Date).TotalDays;
+                                CurrentStep = treatmentStep;
+                                break;
+                            }
+                        }
                     }
+                    Diagnoses[i] = SelectedDiagnosis;
+                    break;
                 }
-                Diagnoses[i] = SelectedDiagnosis;
-                break;
             }
         }
 
@@ -250,7 +274,7 @@ public partial class DiagnosisDetailViewModel : ObservableObject
         }
 
         // Odstranění díagnózy ze seznamu
-
+        if(Diagnoses != null)
         for (int i = 0; i < Diagnoses.Count; i++)
         {
             if (Diagnoses[i].diagnosisId == SelectedDiagnosis.diagnosisId)

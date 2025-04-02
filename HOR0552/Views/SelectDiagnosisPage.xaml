@@ -10,26 +10,29 @@
    xmlns:model="clr-namespace:HOR0552.Models"  
    x:DataType="viewmodel:SelectDiagnosisViewModel"  
    mc:Ignorable="d">  
-   <ContentPage.Content>  
-       <Grid RowDefinitions="Auto, *, Auto"  
-             Padding="10">  
-           <SearchBar Grid.Row="0" Margin="-10, 0, 0, 10" Placeholder="Vyhledat" TextChanged="OnSearchBarTextChanged"/>  
-           <CollectionView Grid.Row="1" ItemsSource="{Binding FilteredDiagnoses}"  
-                   SelectionMode="None">  
-               <CollectionView.ItemTemplate>  
-                   <DataTemplate x:DataType="model:Diagnosis">  
-                       <Border Margin="4">  
-                           <Border.GestureRecognizers>  
-                               <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SelectDiagnosisViewModel}}, Path=ShowDetailCommand}"  
-                                                  CommandParameter="{Binding .}"/>  
-                           </Border.GestureRecognizers>  
-                           <Grid ColumnDefinitions=".80*, .20*" Padding="10">  
-                               <Label	Grid.Column="0" Text="{Binding name}" FontSize="25"/>  
-                           </Grid>  
-                       </Border>  
-                   </DataTemplate>  
-               </CollectionView.ItemTemplate>  
-           </CollectionView>  
-       </Grid>  
-   </ContentPage.Content>  
+ 
+  <Grid RowDefinitions="Auto, *">
+        <Border Grid.Row="0">
+            <SearchBar  Margin="-10, 0, 0, 10" Placeholder="Vyhledat" TextChanged="OnSearchBarTextChanged"/>
+        </Border>
+            <Border Grid.Row="1">
+                <CollectionView ItemsSource="{Binding FilteredDiagnoses}"  
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Diagnosis">
+                        <Border Style="{StaticResource SecondaryBorder}"
+                                Margin="5,2,5,2">
+                            <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SelectDiagnosisViewModel}}, Path=ShowDetailCommand}"  
+                                               CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions=".80*, .20*" Padding="10">
+                                    <Label	Grid.Column="0" Text="{Binding name}" FontSize="25"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+    </Grid>  
 </ContentPage>

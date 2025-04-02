@@ -23,7 +23,7 @@ namespace HOR0552
                         android.OnCreate((activity, bundle) =>
                         {
                             var window = activity.Window;
-                            window.SetStatusBarColor( Android.Graphics.Color.ParseColor("#1f1f1f"));
+                            window.SetStatusBarColor( Android.Graphics.Color.ParseColor("#0466cf"));
                         });
                     });
 #endif
@@ -65,7 +65,7 @@ namespace HOR0552
             var appInstance = app.Services.GetService<App>();
             if (appInstance != null)
             {
-                appInstance.PreloadCalendarPage(app.Services);
+               appInstance.PreloadCalendarPage(app.Services);
             }
             else
             {
