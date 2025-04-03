@@ -28,8 +28,8 @@
                 TodayTextColor="#0466cf"
                 FirstDayOfWeek="Monday"
                 WeekendDayColor="Red"
-                SwipeLeftCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailCalendarViewModel}}, Path=PreviousMonthCommand}"
-                SwipeRightCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailCalendarViewModel}}, Path=NextMonthCommand}">
+                SwipeLeftCommand="{Binding PreviousMonthCommand}"
+                SwipeRightCommand="{Binding NextMonthCommand}">
 
                 <controls:Calendar.HeaderSectionTemplate>
                     <DataTemplate>

@@ -27,8 +27,8 @@
                 TodayTextColor="#0466cf"
                 FirstDayOfWeek="Monday"
                 WeekendDayColor="Red"
-                SwipeLeftCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=PreviousMonthCommand}"
-                SwipeRightCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=NextMonthCommand}">
+                SwipeLeftCommand="{Binding PreviousMonthCommand}"
+                SwipeRightCommand="{Binding NextMonthCommand}">
 
                 <controls:Calendar.HeaderSectionTemplate>
                     <DataTemplate>
@@ -36,7 +36,7 @@
                             <Button Grid.Column="0" CornerRadius="30" Text="◄" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=PreviousMonthCommand}" />
                             <Label Grid.Column="1" Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CalendarViewModel}}, Path=DisplayDate, StringFormat='{0:MMMM yyyy}'}"
                                    FontSize="18"
-                                   TextColor="{AppThemeBinding Light={StaticResource ButtonPrimary}, Dark={StaticResource ButtonPrimary}}"
+                                   TextColor="{AppThemeBinding Light={StaticResource ButtonText}, Dark={StaticResource ButtonText}}"
                                    FontAttributes="Bold"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center" />

@@ -21,11 +21,12 @@ public partial class EventDetailsViewModel : ObservableObject
     [ObservableProperty]
     private string formatedDate;
 
-    ObservableCollection<CalendarEvent> eventCollection;
+    ObservableCollection<CalendarEvent> _eventCollection;
 
     public EventDetailsViewModel()
     {
         FormatedDate = "";
+        _eventCollection = new ObservableCollection<CalendarEvent>();
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -59,55 +60,54 @@ public partial class EventDetailsViewModel : ObservableObject
                 var loadedEvents = JsonSerializer.Deserialize<ObservableCollection<CalendarEvent>>(json);
                 if (loadedEvents != null)
                 {
-                    eventCollection = loadedEvents;
+                    _eventCollection = loadedEvents;
                 }
                 else
                 {
-                    eventCollection = new ObservableCollection<CalendarEvent>();
+                    _eventCollection = new ObservableCollection<CalendarEvent>();
                 }
             }
             else
             {
-                eventCollection = new ObservableCollection<CalendarEvent>();
+                _eventCollection = new ObservableCollection<CalendarEvent>();
             }
 
         }
         else
         {
-            eventCollection = new ObservableCollection<CalendarEvent>();
+            _eventCollection = new ObservableCollection<CalendarEvent>();
         }
     }
 
     private void updateAllEvents()
     {
         var filePath = Path.Combine(FileSystem.AppDataDirectory, "events.json");
-        var json = JsonSerializer.Serialize(eventCollection);
+        var json = JsonSerializer.Serialize(_eventCollection);
 
         using (var writer = new StreamWriter(filePath))
         {
             writer.Write(json);
         }
     }
-
     [RelayCommand]
     async Task DeleteEvent()
     {
         LoadAllEvents();
 
-        if(eventCollection != null)
-        for (int i = 0; i < eventCollection.Count; i++)
+        if (_eventCollection != null)
         {
-            var currentEvent = eventCollection[i];
-            if (currentEvent.diagnosisId == SelectedEvent.diagnosisId &&
+            var eventToRemove = _eventCollection.FirstOrDefault(currentEvent =>
+                currentEvent.diagnosisId == SelectedEvent.diagnosisId &&
                 currentEvent.diagnosisName == SelectedEvent.diagnosisName &&
                 currentEvent.name == SelectedEvent.name &&
                 currentEvent.date == SelectedEvent.date &&
                 currentEvent.location == SelectedEvent.location &&
                 currentEvent.description == SelectedEvent.description &&
-                currentEvent.color == SelectedEvent.color)
+                currentEvent.color == SelectedEvent.color);
+
+            if (eventToRemove != null)
             {
-                eventCollection.RemoveAt(i);
-                break;
+                _eventCollection.Remove(eventToRemove);
             }
         }
 

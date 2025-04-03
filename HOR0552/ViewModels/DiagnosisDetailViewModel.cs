@@ -274,13 +274,12 @@ public partial class DiagnosisDetailViewModel : ObservableObject
         }
 
         // Odstranění díagnózy ze seznamu
-        if(Diagnoses != null)
-        for (int i = 0; i < Diagnoses.Count; i++)
+        if (Diagnoses != null && Diagnoses.Count > 0)
         {
-            if (Diagnoses[i].diagnosisId == SelectedDiagnosis.diagnosisId)
+            var diagnosisToRemove = Diagnoses.FirstOrDefault(d => d.diagnosisId == SelectedDiagnosis.diagnosisId);
+            if (diagnosisToRemove != null)
             {
-                Diagnoses.RemoveAt(i);
-                break;
+                Diagnoses.Remove(diagnosisToRemove);
             }
         }
 
