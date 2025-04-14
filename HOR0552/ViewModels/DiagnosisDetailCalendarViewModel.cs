@@ -49,11 +49,19 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
     {
         Events.Clear();
 
+        if (SelectedDiagnosis == null)
+            return;
         foreach (TreatmentStep treatmentStep in SelectedDiagnosis.treatmentPlan)
         {
             if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
             {
                 DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
+
+                if (deadlineDate.Month != DisplayDate.Month || deadlineDate.Year != DisplayDate.Year)
+                {
+                    // Skip adding events that are not in the current month
+                    continue;
+                }
 
                 if (!Events.ContainsKey(deadlineDate))
                 {
@@ -95,6 +103,12 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
 
             if (!SelectedDiagnosis.diagnosisId.Equals(e.diagnosisId))
                 continue;
+
+            if (e.date.Month != DisplayDate.Month || e.date.Year != DisplayDate.Year)
+            {
+                // Skip adding events that are not in the current month
+                continue;
+            }
 
             Color clr;
             switch (e.color)
@@ -199,11 +213,15 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
     void PreviousMonth()
     {
         DisplayDate = DisplayDate.AddMonths(-1);
+        PopulateEvents();
+
     }
 
     [RelayCommand]
     void NextMonth()
     {
         DisplayDate = DisplayDate.AddMonths(1);
+        PopulateEvents();
+
     }
 }

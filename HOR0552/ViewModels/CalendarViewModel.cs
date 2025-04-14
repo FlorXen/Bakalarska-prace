@@ -44,6 +44,7 @@ public partial class CalendarViewModel : ObservableObject
     public void PopulateEvents()
     {
         Events.Clear();
+
         if (Diagnoses != null && Diagnoses.Count > 0)
         {
             foreach (Diagnosis diagnosis in Diagnoses)
@@ -55,6 +56,12 @@ public partial class CalendarViewModel : ObservableObject
                         if (!treatmentStep.isCompleted && treatmentStep.stepDate != null)
                         {
                             DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
+
+                            if(deadlineDate.Month != DisplayDate.Month || deadlineDate.Year != DisplayDate.Year)
+                            {
+                                // Skip adding events that are not in the current month
+                                continue;
+                            }
 
                             if (!Events.ContainsKey(deadlineDate))
                             {
@@ -94,6 +101,12 @@ public partial class CalendarViewModel : ObservableObject
 
         foreach (CalendarEvent e in eventCollection)
         {
+            if (e.date.Month != DisplayDate.Month || e.date.Year != DisplayDate.Year)
+            {
+                // Skip adding events that are not in the current month
+                continue;
+            }
+
             Color clr;
             switch (e.color)
             {
@@ -226,11 +239,13 @@ public partial class CalendarViewModel : ObservableObject
     void PreviousMonth()
     {
         DisplayDate = DisplayDate.AddMonths(-1);
+        PopulateEvents();
     }
 
     [RelayCommand]
     void NextMonth()
     {
         DisplayDate = DisplayDate.AddMonths(1);
+        PopulateEvents();
     }
 }
