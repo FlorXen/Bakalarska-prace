@@ -21,7 +21,7 @@
 	<Nullable>enable</Nullable>  
 
 	<!-- Display name -->  
-	<ApplicationTitle>Zdraví v mobilu</ApplicationTitle>  
+	<ApplicationTitle>Diagnózy</ApplicationTitle>  
 
 	<!-- App Identifier -->  
 	<ApplicationId>com.companyname.hor0552</ApplicationId>  
@@ -45,7 +45,7 @@
 	<!-- App Icon -->  
     <MauiIcon Include="Resources\AppIcon\appicon.png" BackgroundColor="#0466cf" ForegroundScale="0.55" /> 
 	<!-- Splash Screen -->  
-	<MauiSplashScreen Include="Resources\AppIcon\appicon.png" Color="#0466cf" BaseSize="512,512" />  
+    <MauiSplashScreen Include="Resources\Splash\splashicon.svg" Color="#0466cf" BaseSize="128,128" />
 	<!-- Images -->  
 	<MauiImage Include="Resources\Images\*" />  
 

@@ -2,14 +2,14 @@
   "diagnoses": [
     {
       "diagnosisId": "1",
-      "name": "Diabetes Type 2",
+      "name": "Diabetes 2. typu",
       "treatmentPlan": [
         {
           "step": 1,
           "procedure": {
-            "name": "Initial Consultation",
-            "type": "Consultation",
-            "doctorType": "Endocrinologist"
+            "name": "Úvodní konzultace",
+            "type": "Konzultace",
+            "doctorType": "Endokrinolog"
           },
           "deadlineInDays": 1,
           "nextStep": 2
@@ -17,22 +17,22 @@
         {
           "step": 2,
           "procedure": {
-            "name": "Blood Test",
-            "type": "Laboratory",
-            "doctorType": "Lab Technician"
+            "name": "Krevní test",
+            "type": "Laboratoř",
+            "doctorType": "Laboratorní technik"
           },
           "deadlineInDays": 2,
           "nextSteps": {
-            "Normal": 3,
-            "Abnormal": 4
+            "Normální": 3,
+            "Abnormální": 4
           }
         },
         {
           "step": 3,
           "procedure": {
-            "name": "Nutrition Counseling",
-            "type": "Consultation",
-            "doctorType": "Dietitian"
+            "name": "Nutriční poradenství",
+            "type": "Konzultace",
+            "doctorType": "Dietolog"
           },
           "deadlineInDays": 1,
           "nextStep": 5
@@ -40,9 +40,9 @@
         {
           "step": 4,
           "procedure": {
-            "name": "Additional Tests",
-            "type": "Laboratory",
-            "doctorType": "Lab Technician"
+            "name": "Doplňující testy",
+            "type": "Laboratoř",
+            "doctorType": "Laboratorní technik"
           },
           "deadlineInDays": 5,
           "nextStep": 5
@@ -50,9 +50,9 @@
         {
           "step": 5,
           "procedure": {
-            "name": "Follow-up Consultation",
-            "type": "Consultation",
-            "doctorType": "Endocrinologist"
+            "name": "Kontrolní konzultace",
+            "type": "Konzultace",
+            "doctorType": "Endokrinolog"
           },
           "deadlineInDays": 1,
           "nextStep": 6
@@ -60,9 +60,9 @@
         {
           "step": 6,
           "procedure": {
-            "name": "Ongoing Monitoring",
-            "type": "Monitoring",
-            "doctorType": "Endocrinologist"
+            "name": "Průběžné sledování",
+            "type": "Monitorování",
+            "doctorType": "Endokrinolog"
           },
           "deadlineInDays": 30,
           "nextStep": null
@@ -71,36 +71,255 @@
     },
     {
       "diagnosisId": "2",
-      "name": "Cold",
+      "name": "Hypertenze",
       "treatmentPlan": [
         {
           "step": 1,
           "procedure": {
-            "name": "Initial Consultation",
-            "type": "Consultation",
-            "doctorType": "Endocrinologist"
+            "name": "Měření krevního tlaku",
+            "type": "Vyšetření",
+            "doctorType": "Praktický lékař"
           },
           "deadlineInDays": 1,
+          "nextSteps": {
+            "Normální": 2,
+            "Vysoký": 3
+          }
+        },
+        {
+          "step": 2,
+          "procedure": {
+            "name": "Prevence – úprava životního stylu",
+            "type": "Konzultace",
+            "doctorType": "Praktický lékař"
+          },
+          "deadlineInDays": 5,
+          "nextStep": null
+        },
+        {
+          "step": 3,
+          "procedure": {
+            "name": "Zahájení medikace",
+            "type": "Předpis",
+            "doctorType": "Internista"
+          },
+          "deadlineInDays": 2,
+          "nextStep": 4
+        },
+        {
+          "step": 4,
+          "procedure": {
+            "name": "Kontrolní měření",
+            "type": "Vyšetření",
+            "doctorType": "Praktický lékař"
+          },
+          "deadlineInDays": 14,
           "nextStep": null
         }
       ]
     },
     {
       "diagnosisId": "3",
-      "name": "Broken femur",
+      "name": "Astma",
       "treatmentPlan": [
         {
           "step": 1,
           "procedure": {
-            "name": "Initial Consultation",
-            "type": "Consultation",
-            "doctorType": "Endocrinologist"
+            "name": "Spirometrie",
+            "type": "Vyšetření",
+            "doctorType": "Plicní lékař"
           },
-          "deadlineInDays": 1,
+          "deadlineInDays": 3,
+          "nextStep": 2
+        },
+        {
+          "step": 2,
+          "procedure": {
+            "name": "Nastavení léčby",
+            "type": "Předpis",
+            "doctorType": "Plicní lékař"
+          },
+          "deadlineInDays": 2,
+          "nextSteps": {
+            "Lehká forma": 3,
+            "Těžká forma": 4
+          }
+        },
+        {
+          "step": 3,
+          "procedure": {
+            "name": "Školení inhalační techniky",
+            "type": "Instruktáž",
+            "doctorType": "Zdravotní sestra"
+          },
+          "deadlineInDays": 7,
+          "nextStep": null
+        },
+        {
+          "step": 4,
+          "procedure": {
+            "name": "Kontrolní vyšetření",
+            "type": "Vyšetření",
+            "doctorType": "Plicní lékař"
+          },
+          "deadlineInDays": 14,
+          "nextStep": null
+        }
+      ]
+    },
+    {
+      "diagnosisId": "4",
+      "name": "Akné",
+      "treatmentPlan": [
+        {
+          "step": 1,
+          "procedure": {
+            "name": "Kožní vyšetření",
+            "type": "Vyšetření",
+            "doctorType": "Dermatolog"
+          },
+          "deadlineInDays": 3,
+          "nextStep": 2
+        },
+        {
+          "step": 2,
+          "procedure": {
+            "name": "Volba léčby",
+            "type": "Předpis",
+            "doctorType": "Dermatolog"
+          },
+          "deadlineInDays": 3,
+          "nextSteps": {
+            "Mírné": 3,
+            "Závažné": 4
+          }
+        },
+        {
+          "step": 3,
+          "procedure": {
+            "name": "Kontrola po lokální léčbě",
+            "type": "Kontrola",
+            "doctorType": "Dermatolog"
+          },
+          "deadlineInDays": 30,
+          "nextStep": null
+        },
+        {
+          "step": 4,
+          "procedure": {
+            "name": "Nasazení systémové léčby",
+            "type": "Předpis",
+            "doctorType": "Dermatolog"
+          },
+          "deadlineInDays": 7,
+          "nextStep": 5
+        },
+        {
+          "step": 5,
+          "procedure": {
+            "name": "Laboratorní kontrola jater",
+            "type": "Laboratoř",
+            "doctorType": "Laboratorní technik"
+          },
+          "deadlineInDays": 30,
+          "nextStep": null
+        }
+      ]
+    },
+    {
+      "diagnosisId": "5",
+      "name": "Anémie",
+      "treatmentPlan": [
+        {
+          "step": 1,
+          "procedure": {
+            "name": "Odběr krve",
+            "type": "Laboratoř",
+            "doctorType": "Laboratorní technik"
+          },
+          "deadlineInDays": 2,
+          "nextStep": 2
+        },
+        {
+          "step": 2,
+          "procedure": {
+            "name": "Vyhodnocení výsledků",
+            "type": "Konzultace",
+            "doctorType": "Hematolog"
+          },
+          "deadlineInDays": 2,
+          "nextSteps": {
+            "Lehká anémie": 3,
+            "Těžká anémie": 4
+          }
+        },
+        {
+          "step": 3,
+          "procedure": {
+            "name": "Doporučení doplňků stravy",
+            "type": "Doporučení",
+            "doctorType": "Praktický lékař"
+          },
+          "deadlineInDays": 3,
+          "nextStep": null
+        },
+        {
+          "step": 4,
+          "procedure": {
+            "name": "Infuzní terapie železem",
+            "type": "Léčba",
+            "doctorType": "Hematolog"
+          },
+          "deadlineInDays": 7,
+          "nextStep": null
+        }
+      ]
+    },
+    {
+      "diagnosisId": "6",
+      "name": "Štítná žláza – hypotyreóza",
+      "treatmentPlan": [
+        {
+          "step": 1,
+          "procedure": {
+            "name": "Krevní test TSH",
+            "type": "Laboratoř",
+            "doctorType": "Laboratorní technik"
+          },
+          "deadlineInDays": 2,
+          "nextStep": 2
+        },
+        {
+          "step": 2,
+          "procedure": {
+            "name": "Endokrinologická konzultace",
+            "type": "Konzultace",
+            "doctorType": "Endokrinolog"
+          },
+          "deadlineInDays": 3,
+          "nextStep": 3
+        },
+        {
+          "step": 3,
+          "procedure": {
+            "name": "Zahájení substituční léčby",
+            "type": "Předpis",
+            "doctorType": "Endokrinolog"
+          },
+          "deadlineInDays": 2,
+          "nextStep": 4
+        },
+        {
+          "step": 4,
+          "procedure": {
+            "name": "Kontrolní test po 6 týdnech",
+            "type": "Laboratoř",
+            "doctorType": "Laboratorní technik"
+          },
+          "deadlineInDays": 42,
           "nextStep": null
         }
       ]
     }
   ]
 }
-
