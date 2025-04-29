@@ -11,12 +11,13 @@
     x:DataType="viewmodel:DiagnosisStepsViewModel"
     Title="Seznam kroků léčby">
 
-    <Border>
+    <Border Style="{StaticResource MyBorderStyle}">
         <CollectionView ItemsSource="{Binding SelectedDiagnosis.treatmentPlan}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:TreatmentStep">
-                    <Border BackgroundColor="{Binding ., Converter={StaticResource ColorFromTreatmentStepConverter}}"
+                    <Border Style="{StaticResource MyBorderStyle}"
+                            BackgroundColor="{Binding ., Converter={StaticResource ColorFromTreatmentStepConverter}}"
                             Margin="5,5,5,0">
                         <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, *" Margin="7">
                             <Label Grid.Row="0"

@@ -7,14 +7,14 @@
 
     <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto, *">
 
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Padding="10">
+        <Border Grid.Row="0" Style="{StaticResource MyBorderStyle}" Grid.ColumnSpan="2" Padding="10">
             <VerticalStackLayout>
                 <Picker Title="Diagnóza" FontSize="20" ItemsSource="{Binding Diagnoses}" SelectedItem="{Binding SelectedDiagnosis}" />
                 <Entry Placeholder="Název události" Text="{Binding EventTitle}" FontSize="20" />
             </VerticalStackLayout>
         </Border>
 
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Padding="10">
+        <Border Grid.Row="1" Style="{StaticResource MyBorderStyle}" Grid.ColumnSpan="2" Padding="10">
             <VerticalStackLayout>
                 <HorizontalStackLayout>
                     <Label Text="Celodenní událost:" VerticalTextAlignment="Center" FontSize="20"/>
@@ -28,7 +28,7 @@
             </VerticalStackLayout>
         </Border>
 
-        <Border Grid.Row="2" Grid.ColumnSpan="2" Padding="10">
+        <Border Grid.Row="2" Style="{StaticResource MyBorderStyle}" Grid.ColumnSpan="2" Padding="10">
             <VerticalStackLayout>
                 <Entry Placeholder="Místo konání" Text="{Binding Location}" FontSize="20"/>
                 <Editor Placeholder="Poznámky" Text="{Binding Notes}" HeightRequest="100" FontSize="20"/>
@@ -37,6 +37,7 @@
         </Border>
 
         <Border Grid.Row="3"
+                Style="{StaticResource MyBorderStyle}"
                 Grid.ColumnSpan="2"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"

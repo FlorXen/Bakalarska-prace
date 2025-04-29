@@ -13,7 +13,9 @@ public partial class CalendarViewModel : ObservableObject
     ObservableCollection<Diagnosis> Diagnoses;
     ObservableCollection<CalendarEvent> eventCollection;
     public EventCollection Events { get; set; }
-    public CultureInfo Culture => new CultureInfo("cs-CZ");
+
+    [ObservableProperty]
+    public CultureInfo culture;
 
     [ObservableProperty]
     private bool isAddEventButtonVisible;
@@ -25,6 +27,7 @@ public partial class CalendarViewModel : ObservableObject
     private DateTime displayDate;
     public CalendarViewModel()
     {
+        Culture = new CultureInfo("cs-CZ");
         Diagnoses = new ObservableCollection<Diagnosis>();
         Events = new EventCollection { };
         SelectedDate = DateTime.Now;
@@ -32,7 +35,7 @@ public partial class CalendarViewModel : ObservableObject
         IsAddEventButtonVisible = false;
         eventCollection = new ObservableCollection<CalendarEvent>();
     }
-    
+
     public void OnPageAppearing()
     {
         SelectedDate = DateTime.Now;
@@ -57,7 +60,7 @@ public partial class CalendarViewModel : ObservableObject
                         {
                             DateTime deadlineDate = DateTime.Now.Date.AddDays(treatmentStep.daysUntilDeadline);
 
-                            if(deadlineDate.Month != DisplayDate.Month || deadlineDate.Year != DisplayDate.Year)
+                            if (deadlineDate.Month != DisplayDate.Month || deadlineDate.Year != DisplayDate.Year)
                             {
                                 // Skip adding events that are not in the current month
                                 continue;
@@ -75,7 +78,8 @@ public partial class CalendarViewModel : ObservableObject
                                 {
                                     EventIndicatorColor = Colors.Red,
                                     EventIndicatorSelectedColor = Colors.Red,
-                                    EventIndicatorSelectedTextColor = Colors.Red
+                                    EventIndicatorSelectedTextColor = Colors.Red,
+                                    Colors = [Colors.Red]
                                 });
                             }
                             else if (Events[deadlineDate] is DayEventCollection<CalendarEvent> eventList)
@@ -107,36 +111,14 @@ public partial class CalendarViewModel : ObservableObject
                 continue;
             }
 
-            Color clr;
-            switch (e.color)
-            {
-                case "Blue":
-                    clr = Colors.Blue;
-                    break;
-                case "Red":
-                    clr = Colors.Red;
-                    break;
-                case "Green":
-                    clr = Colors.Green;
-                    break;
-                case "Yellow":
-                    clr = Colors.Yellow;
-                    break;
-                case "Magenta":
-                    clr = Colors.Magenta;
-                    break;
-                default:
-                    clr = Colors.Blue;
-                    break;
-            }
-
             if (!Events.ContainsKey(e.date))
             {
                 Events.Add(e.date, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = e.diagnosisId, diagnosisName = e.diagnosisName, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color } })
                 {
-                    EventIndicatorColor = clr,
-                    EventIndicatorSelectedColor = clr,
-                    EventIndicatorSelectedTextColor = clr
+                    EventIndicatorColor = Color.Parse(e.color),
+                    EventIndicatorSelectedColor = Color.Parse(e.color),
+                    EventIndicatorSelectedTextColor = Color.Parse(e.color),
+                    Colors = [Color.Parse(e.color)]
                 });
             }
             else if (Events[e.date] is DayEventCollection<CalendarEvent> eventList)
@@ -153,7 +135,7 @@ public partial class CalendarViewModel : ObservableObject
         {
             using var reader = new StreamReader(filePath);
             var json = reader.ReadToEnd();
-            if(json != "")
+            if (json != "")
             {
                 var loadedEvents = JsonSerializer.Deserialize<ObservableCollection<CalendarEvent>>(json);
                 if (loadedEvents != null)
@@ -164,11 +146,12 @@ public partial class CalendarViewModel : ObservableObject
                 {
                     eventCollection = new ObservableCollection<CalendarEvent>();
                 }
-            } else
+            }
+            else
             {
                 eventCollection = new ObservableCollection<CalendarEvent>();
             }
-            
+
         }
         else
         {
@@ -208,7 +191,7 @@ public partial class CalendarViewModel : ObservableObject
 
     partial void OnSelectedDateChanged(DateTime? value)
     {
-        if(value != null)
+        if (value != null)
         {
             IsAddEventButtonVisible = true;
         }

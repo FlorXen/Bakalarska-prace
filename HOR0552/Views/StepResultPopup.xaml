@@ -12,8 +12,8 @@
     mc:Ignorable="d"
     Color="Transparent">
 
-    <Border Padding="20" BackgroundColor="Transparent">
-        <Border HorizontalOptions="Center" VerticalOptions="Center" Style="{StaticResource SecondaryBorder}">
+    <Border Padding="20" BackgroundColor="Transparent" Style="{StaticResource MyBorderStyle}">
+        <Border HorizontalOptions="Center" VerticalOptions="Center" Style="{StaticResource SecondaryBorderStyle}">
             <Grid RowDefinitions="Auto, *, Auto"
                   RowSpacing="10"
                   MaximumWidthRequest="350"
@@ -25,6 +25,7 @@
                        Margin="10,10,0,0"/>
                 
                 <Border Grid.Row="1"
+                        Style="{StaticResource MyBorderStyle}"
                         Margin="5,5,5,-5">
                     
                     <CollectionView ItemsSource="{Binding Step.nextSteps}"
@@ -57,7 +58,7 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </Border>
-                <Border Grid.Row="2">
+                <Border Grid.Row="2" Style="{StaticResource MyBorderStyle}">
                     <Button Text="Zpět"
                             VerticalOptions="Center"
                             Margin="60,3,60,3"

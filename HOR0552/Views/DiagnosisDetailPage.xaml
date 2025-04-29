@@ -16,7 +16,7 @@
     </ContentPage.ToolbarItems>
 
     <VerticalStackLayout>
-        <Border Padding="5">
+        <Border Padding="5" Style="{StaticResource MyBorderStyle}">
                 <VerticalStackLayout>
                     <Label 
                         Text="{Binding CurrentStep.procedure.name}"
@@ -52,7 +52,7 @@
             </Border>
 
 
-        <Border>
+        <Border Style="{StaticResource MyBorderStyle}">
             <VerticalStackLayout>
                 <Button 
                     Text="Kroky léčby"

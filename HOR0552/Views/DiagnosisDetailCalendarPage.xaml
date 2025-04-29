@@ -5,31 +5,49 @@
              xmlns:viewmodel="clr-namespace:HOR0552.ViewModels"
              xmlns:model="clr-namespace:HOR0552.Models"
              xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar" 
+             xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
              x:DataType="viewmodel:DiagnosisDetailCalendarViewModel"
              Title="{Binding SelectedDiagnosis.name}">
 
-    <Border>
+    <ContentPage.Resources>
+        <Style
+    x:Key="MyDaysTitleLabelStyle"
+    BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
+    TargetType="Label">
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+        </Style>
+        <Style
+    x:Key="MyWeekendTitleStyle"
+    BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
+    TargetType="Label">
+            <Setter Property="TextColor" Value="Red" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Border Style="{StaticResource MyBorderStyle}">
         <Grid RowDefinitions="*, Auto">
             <controls:Calendar
-                Grid.Row="0"
-                Events="{Binding Events}"
-                EventsScrollViewVisible="True"
-                Culture="{Binding Culture}"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill"
-                SelectedDate="{Binding SelectedDate}"
-                ShownDate="{Binding DisplayDate}"
-                TodayOutlineColor="#0466cf"
-                DaysTitleColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
-                DaysTitleWeekendColor="Red"
-                OtherMonthDayColor="Gray"
-                DeselectedDayTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
-                EventIndicatorTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
-                TodayTextColor="#0466cf"
-                FirstDayOfWeek="Monday"
-                WeekendDayColor="Red"
-                SwipeLeftCommand="{Binding PreviousMonthCommand}"
-                SwipeRightCommand="{Binding NextMonthCommand}">
+        Grid.Row="0"
+        Events="{Binding Events}"
+        EventsScrollViewVisible="True"
+        Culture="{Binding Culture}"
+        VerticalOptions="Fill"
+        HorizontalOptions="Fill"
+        SelectedDate="{Binding SelectedDate}"
+        ShownDate="{Binding DisplayDate}"
+        TodayOutlineColor="#0466cf"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
+        OtherMonthDayColor="Gray"
+        DeselectedDayTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+        EventIndicatorTextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+        TodayTextColor="#0466cf"
+        FirstDayOfWeek="Monday"
+        WeekendDayColor="Red"
+        SwipeLeftCommand="{Binding PreviousMonthCommand}"
+        SwipeRightCommand="{Binding NextMonthCommand}"
+        EventIndicatorType="BottomDot"
+        EventIndicatorColor="Red">
 
                 <controls:Calendar.HeaderSectionTemplate>
                     <DataTemplate>
@@ -49,7 +67,7 @@
                 <controls:Calendar.EventTemplate>
                     <DataTemplate x:DataType="model:CalendarEvent">
                         <ScrollView Orientation="Vertical">
-                            <Border Margin="5,2,5,2">
+                            <Border Margin="5,2,5,2" Style="{StaticResource MyBorderStyle}">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiagnosisDetailCalendarViewModel}}, Path=EventTappedCommand}"
                                     CommandParameter="{Binding .}"/>

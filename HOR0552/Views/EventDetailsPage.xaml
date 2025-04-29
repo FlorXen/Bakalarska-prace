@@ -19,8 +19,8 @@
                      Order="Primary"
                      Priority="0"/>
     </ContentPage.ToolbarItems>
-    
-    <Border VerticalOptions="Start">
+
+    <Border VerticalOptions="Start" Style="{StaticResource MyBorderStyle}">
         <Grid Padding="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="15"/>
@@ -32,6 +32,7 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
+                    Style="{StaticResource MyBorderStyle}"
                     BackgroundColor="{Binding SelectedEvent.color}"/>
         
             <Label Grid.Row="1"

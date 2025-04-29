@@ -8,7 +8,7 @@
              x:DataType="viewmodel:MainPageViewModel">
     
 	<Grid RowDefinitions="*, Auto">
-        <Border>
+        <Border Style="{StaticResource MyBorderStyle}">
             <CollectionView ItemsSource="{Binding Diagnoses}"
                 SelectionMode="None">
                 <CollectionView.ItemTemplate>
@@ -26,7 +26,7 @@
                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ConfirmStepCommand}"
                                CommandParameter="{Binding .}"/>
                             </SwipeView.RightItems>
-                            <Border Style="{StaticResource SecondaryBorder}"
+                            <Border Style="{StaticResource SecondaryBorderStyle}"
                                     Margin="5,2,5,2">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ShowDetailCommand}"
@@ -58,10 +58,11 @@
         </Border>
 
         <Border Grid.Row="1"
+                Style="{StaticResource MyBorderStyle}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Padding="60,0,60,0">
-            <Border Style="{StaticResource SecondaryBorder}"
+            <Border Style="{StaticResource SecondaryBorderStyle}"
                     Padding="10,0,10,3"
                     HorizontalOptions="Center">
                 <Grid>

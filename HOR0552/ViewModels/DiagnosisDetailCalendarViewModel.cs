@@ -15,7 +15,9 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
     ObservableCollection<Diagnosis> Diagnoses;
     ObservableCollection<CalendarEvent> eventCollection;
     public EventCollection Events { get; set; }
-    public CultureInfo Culture => new CultureInfo("cs-CZ");
+
+    [ObservableProperty]
+    public CultureInfo culture;
 
     [ObservableProperty]
     private Diagnosis? selectedDiagnosis;
@@ -30,6 +32,7 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
     private DateTime displayDate;
     public DiagnosisDetailCalendarViewModel()
     {
+        Culture = new CultureInfo("cs-CZ");
         Events = new EventCollection { };
         Diagnoses = new ObservableCollection<Diagnosis>();
         SelectedDate = DateTime.Now;
@@ -76,7 +79,8 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
                     {
                         EventIndicatorColor = Colors.Red,
                         EventIndicatorSelectedColor = Colors.Red,
-                        EventIndicatorSelectedTextColor = Colors.Red
+                        EventIndicatorSelectedTextColor = Colors.Red,
+                        Colors = [Colors.Red]
                     });
                 }
                 else if (Events[deadlineDate] is DayEventCollection<CalendarEvent> eventList)
@@ -110,36 +114,14 @@ public partial class DiagnosisDetailCalendarViewModel : ObservableObject
                 continue;
             }
 
-            Color clr;
-            switch (e.color)
-            {
-                case "Blue":
-                    clr = Colors.Blue;
-                    break;
-                case "Red":
-                    clr = Colors.Red;
-                    break;
-                case "Green":
-                    clr = Colors.Green;
-                    break;
-                case "Yellow":
-                    clr = Colors.Yellow;
-                    break;
-                case "Magenta":
-                    clr = Colors.Magenta;
-                    break;
-                default:
-                    clr = Colors.Blue;
-                    break;
-            }
-
             if (!Events.ContainsKey(e.date))
             {
                 Events.Add(e.date, new DayEventCollection<CalendarEvent>(new List<CalendarEvent> { new CalendarEvent { diagnosisId = e.diagnosisId, diagnosisName = e.diagnosisName, name = e.name, date = e.date, location = e.location, description = e.description, color = e.color } })
                 {
-                    EventIndicatorColor = clr,
-                    EventIndicatorSelectedColor = clr,
-                    EventIndicatorSelectedTextColor = clr
+                    EventIndicatorColor = Color.Parse(e.color),
+                    EventIndicatorSelectedColor = Color.Parse(e.color),
+                    EventIndicatorSelectedTextColor = Color.Parse(e.color),
+                    Colors = [Color.Parse(e.color)]
                 });
             }
             else if (Events[e.date] is DayEventCollection<CalendarEvent> eventList)

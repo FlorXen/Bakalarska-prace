@@ -12,15 +12,15 @@
    mc:Ignorable="d">  
  
   <Grid RowDefinitions="Auto, *">
-        <Border Grid.Row="0">
+        <Border Grid.Row="0" Style="{StaticResource MyBorderStyle}">
             <SearchBar  Margin="-10, 0, 0, 10" Placeholder="Vyhledat" TextChanged="OnSearchBarTextChanged"/>
         </Border>
-            <Border Grid.Row="1">
+            <Border Grid.Row="1" Style="{StaticResource MyBorderStyle}">
                 <CollectionView ItemsSource="{Binding FilteredDiagnoses}"  
                                 SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Diagnosis">
-                        <Border Style="{StaticResource SecondaryBorder}"
+                        <Border Style="{StaticResource SecondaryBorderStyle}"
                                 Margin="5,2,5,2">
                             <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SelectDiagnosisViewModel}}, Path=ShowDetailCommand}"  
